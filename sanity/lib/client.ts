@@ -6,6 +6,8 @@ export const client = isSanityConfigured
       projectId,
       dataset,
       apiVersion,
-      useCdn: true,
+      // Content is fetched only at build time; skip the CDN so builds
+      // always see the latest published content.
+      useCdn: false,
     })
   : null;

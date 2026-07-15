@@ -84,12 +84,14 @@ export default async function Home() {
             className="h-9 w-auto"
           />
         </a>
-        <a
-          href={`mailto:${content.contactEmail}`}
-          className="font-medium underline decoration-2 underline-offset-4 hover:decoration-marigold"
-        >
-          {content.contactEmail}
-        </a>
+        {content.contactEmail && (
+          <a
+            href={`mailto:${content.contactEmail}`}
+            className="font-medium underline decoration-2 underline-offset-4 hover:decoration-marigold"
+          >
+            {content.contactEmail}
+          </a>
+        )}
       </header>
 
       <main id="top">
@@ -103,9 +105,11 @@ export default async function Home() {
             <p className="rise rise-3 mt-6 max-w-[52ch] text-lg leading-relaxed md:text-xl">
               {content.heroSubheading}
             </p>
-            <div className="rise rise-4 mt-10">
-              <EmailButton email={content.contactEmail} label="Email us" />
-            </div>
+            {content.contactEmail && (
+              <div className="rise rise-4 mt-10">
+                <EmailButton email={content.contactEmail} label="Email us" />
+              </div>
+            )}
           </div>
           <div className="rise rise-3 hidden justify-center md:flex">
             <Image
@@ -222,12 +226,14 @@ export default async function Home() {
             <p className="mt-5 max-w-[45ch] text-lg leading-relaxed md:text-xl">
               {content.contactBody}
             </p>
-            <div className="mt-10">
-              <EmailButton
-                email={content.contactEmail}
-                label={`Email ${content.contactEmail}`}
-              />
-            </div>
+            {content.contactEmail && (
+              <div className="mt-10">
+                <EmailButton
+                  email={content.contactEmail}
+                  label={`Email ${content.contactEmail}`}
+                />
+              </div>
+            )}
           </div>
         </section>
       </main>

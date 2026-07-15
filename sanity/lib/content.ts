@@ -74,7 +74,8 @@ export const fallbackContent: LandingContent = {
   contactHeading: "Let's make something that adds up.",
   contactBody:
     "The best projects start as conversations. Tell us what you're building.",
-  contactEmail: "hello@colormath.com",
+  // Empty hides every email CTA (header link, hero and contact buttons)
+  contactEmail: "",
   seoTitle: "ColorMath — A product design & engineering collaboration studio",
   seoDescription:
     "ColorMath is a collaboration studio between two senior executives: designer Jessica Tenuta and engineer Craig M Booth. Color is design. Math is engineering.",
