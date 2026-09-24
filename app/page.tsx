@@ -51,6 +51,7 @@ function FounderImage({
     return (
       <CutoutVideo
         webm={founder.video.webm}
+        mov={founder.video.mov}
         still={founder.video.still}
         start={founder.video.start}
         label={founder.name}
