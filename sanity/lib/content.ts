@@ -68,7 +68,7 @@ export const fallbackContent: LandingContent = {
   ],
   foundersHeading: "Building great products (and teams) is an art and a science.",
   foundersIntro:
-    "We're operators who built software businesses that scaled to millions of users and went through successful exits. We're not “consultants in a corner”, we're hands-on builders who are focused on helping your team move fast with AI, in the right direction.",
+    "We're operators who built software businesses that scaled to millions of users and went through successful exits. We're not “consultants in a corner”, we're builders who are focused on helping your team move fast with AI, in the right direction.",
   founders: [
     {
       name: "Jessica Tenuta",
