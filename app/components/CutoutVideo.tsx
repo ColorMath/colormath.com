@@ -46,6 +46,11 @@ function alphaLooksRight(video: HTMLVideoElement): boolean {
  * - WebKit (Safari, and every iOS browser, Chrome included): HEVC-alpha MOV.
  *   Its edge pixels are colour-bled before encoding, since HEVC smears alpha
  *   and would otherwise reveal the red backdrop as a fringe.
+ * - iOS in the phone layout (`solid` given): an ordinary H.264 MP4 with the section's
+ *   violet (#6318fb) baked in, padded top and bottom. Plays everywhere,
+ *   iPhones included, and is lighter. It runs full-bleed (no side edges) and
+ *   fades out over its padding, because iOS and Android colour-manage video
+ *   differently (~10 levels apart) and no single baked colour matches both.
  * Reduced-motion visitors, engines that can play neither, and copies hidden
  * at this breakpoint keep the still and download nothing.
  *
@@ -55,6 +60,7 @@ function alphaLooksRight(video: HTMLVideoElement): boolean {
 export function CutoutVideo({
   webm,
   mov,
+  solid,
   still,
   start,
   label,
@@ -64,6 +70,8 @@ export function CutoutVideo({
   webm: string;
   /** HEVC-alpha for WebKit; without it WebKit keeps the still. */
   mov?: string;
+  /** Opaque MP4 on the section violet; used on iOS only (others keep alpha). */
+  solid?: string;
   still: string;
   /** Seconds into the clip where `still` was taken. */
   start: number;
@@ -98,13 +106,16 @@ export function CutoutVideo({
     const webkit =
       iOS || (/AppleWebKit/.test(ua) && !/Chrome|Chromium|Edg|OPR|Firefox/.test(ua));
     const probe = document.createElement("video");
-    if (webkit) {
+    if (solid && iOS) {
+      // iPhones can't render alpha video correctly; everyone else keeps it.
+      if (probe.canPlayType('video/mp4; codecs="avc1.640028"')) setSource(solid);
+    } else if (webkit) {
       // Chromium also reports HEVC support but drops its alpha, hence the UA gate.
       if (mov && probe.canPlayType('video/mp4; codecs="hvc1"')) setSource(mov);
     } else if (probe.canPlayType('video/webm; codecs="vp9"')) {
       setSource(webm);
     }
-  }, [webm, mov]);
+  }, [webm, mov, solid]);
 
   if (source && !failed) {
     return (
@@ -117,7 +128,7 @@ export function CutoutVideo({
         playsInline
         preload="auto"
         aria-label={label}
-        className={className}
+        className={`${className ?? ""} ${source === solid ? "solid-feather" : ""}`}
         style={style}
         onLoadedMetadata={(e) => {
           const video = e.currentTarget;
@@ -128,6 +139,7 @@ export function CutoutVideo({
         onPlaying={(e) => {
           const video = e.currentTarget;
           // Check a real decoded frame, a moment after playback begins.
+          if (source === solid) return; // opaque by design; nothing to check
           window.setTimeout(() => {
             if (!alphaLooksRight(video)) setFailed(true);
           }, 300);
