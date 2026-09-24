@@ -17,6 +17,9 @@ export type Founder = {
     webm: string;
     /** HEVC-alpha copy for WebKit (Safari, all iOS browsers). */
     mov?: string;
+    /** Phone layout: opaque MP4 on the section violet (#6318fb), padded. */
+    solid?: string;
+    solidAspect?: string;
     /** Transparent WebP of one frame: what WebKit browsers show instead. */
     still: string;
     /** Seconds into the clip where `still` was taken; playback starts there. */
@@ -78,6 +81,8 @@ export const fallbackContent: LandingContent = {
       photoUrl: "/img/jessica.png",
       video: {
         webm: "/video/chair-clip-jess.webm",
+        solid: "/video/chair-clip-jess-solid.mp4",
+        solidAspect: "822 / 1708", // 120px violet above and below
         still: "/video/chair-clip-jess-still.webp",
         start: 42.04, // loop frame 1260: both feet in
         aspect: "822 / 1468",
@@ -91,6 +96,8 @@ export const fallbackContent: LandingContent = {
       photoUrl: "/img/craig.png",
       video: {
         webm: "/video/chair-clip-craig.webm",
+        solid: "/video/chair-clip-craig-solid.mp4",
+        solidAspect: "822 / 1708",
         still: "/video/chair-clip-craig-still.webp",
         start: 0, // 20s loop chosen to start and end settled: to camera, ankles crossed
         aspect: "822 / 1468",

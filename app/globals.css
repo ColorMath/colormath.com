@@ -20,7 +20,9 @@
  * the floor line comes from .room-floor, pinned to the chairs.
  */
 .room {
-  background-image: linear-gradient(to bottom, #6d12f2 0, #6318fb 32rem);
+  /* Ends at 26rem so the phone-layout portraits (opaque video on #6318fb)
+     always sit on the flat colour. */
+  background-image: linear-gradient(to bottom, #6d12f2 0, #6318fb 26rem);
 }
 
 @media (min-width: 48rem) {
@@ -72,6 +74,14 @@
   .nav-swipe {
     transition: none;
   }
+}
+
+/* Phone-layout founder videos have #6318fb baked in and 120px of it above and
+   below the subject; fade across that padding so the iOS/Android colour
+   difference can't draw an edge. Full-bleed, so there are no side edges. */
+.solid-feather {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
 }
 
 /* Hero entrance animation, currently unused (removed from the hero on

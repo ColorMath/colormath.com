@@ -43,20 +43,32 @@ const roleChip = [
 function FounderImage({
   founder,
   className,
+  phone = false,
 }: {
   founder: Founder;
   className?: string;
+  /** The stacked phone-layout copy, which sits on solid violet. */
+  phone?: boolean;
 }) {
   if (founder.video) {
+    // Phone copy: full-bleed in the padded framing on every phone, so layout
+    // never depends on the device. iOS plays the solid-violet MP4 in it; other
+    // phones play the transparent WebM, centred (object-contain).
+    const solid = phone && founder.video.solid;
     return (
       <CutoutVideo
         webm={founder.video.webm}
         mov={founder.video.mov}
+        solid={solid || undefined}
         still={founder.video.still}
         start={founder.video.start}
         label={founder.name}
-        className={`h-auto w-full max-w-[380px] ${className ?? ""}`}
-        style={{ aspectRatio: founder.video.aspect }}
+        className={
+          solid
+            ? `-mx-6 h-auto w-[calc(100%+3rem)] max-w-none object-contain ${className ?? ""}`
+            : `h-auto w-full max-w-[380px] ${className ?? ""}`
+        }
+        style={{ aspectRatio: solid ? founder.video.solidAspect : founder.video.aspect }}
       />
     );
   }
@@ -253,7 +265,7 @@ export default async function Home() {
           <div className="relative z-10 mt-14 grid gap-x-16 gap-y-14 md:mt-4 md:grid-cols-2">
             {content.founders.map((founder: Founder, i: number) => (
               <article key={founder.name}>
-                <FounderImage founder={founder} className="mb-6 md:hidden" />
+                <FounderImage founder={founder} phone className="mb-6 md:hidden" />
                 <h3 className="font-display text-3xl font-bold md:text-4xl">
                   {founder.name}
                 </h3>
