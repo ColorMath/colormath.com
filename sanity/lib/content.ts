@@ -102,7 +102,6 @@ export const fallbackContent: LandingContent = {
     "The best projects start as conversations. Tell us what you're building.",
   // Empty hides every email CTA (header link, hero and contact buttons)
   contactEmail: "",
-  seoTitle: "Color/Math: a product design & engineering studio",
-  seoDescription:
-    "Color/Math is a design studio that helps teams design and build products that add real value and achieve business outcomes in the age of AI. Founded by designer Jessica Tenuta and engineer Dr. Craig M. Booth.",
+  seoTitle: "Color/Math",
+  seoDescription: "Multidisciplinary design studio.",
 };

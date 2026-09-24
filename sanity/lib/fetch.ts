@@ -40,6 +40,8 @@ export async function getLandingContent(): Promise<LandingContent> {
       "heroSubheading",
       "foundersHeading",
       "foundersIntro",
+      "seoTitle",
+      "seoDescription",
     ] as const) {
       delete cleaned[key];
     }
