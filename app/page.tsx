@@ -52,7 +52,7 @@ function FounderImage({
         still={founder.video.still}
         start={founder.video.start}
         label={founder.name}
-        className={`w-full max-w-[380px] ${className ?? ""}`}
+        className={`h-auto w-full max-w-[380px] ${className ?? ""}`}
         style={{ aspectRatio: founder.video.aspect }}
       />
     );
@@ -237,7 +237,7 @@ export default async function Home() {
             {content.founders[1] && (
               <FounderImage
                 founder={content.founders[1]}
-                className="relative z-10 mx-auto hidden md:-mt-[calc(4rem+10px)] md:block"
+                className="relative z-10 mx-auto hidden md:-mt-16 md:-translate-y-[10px] md:block"
               />
             )}
           </div>
