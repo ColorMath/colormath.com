@@ -18,6 +18,13 @@ const landingPageQuery = groq`*[_type == "landingPage"][0]{
   seoDescription
 }`;
 
+/** The given keys of `source` that are set, so they can override CMS values. */
+function pick<T extends object, K extends keyof T>(source: T | undefined, keys: K[]): Partial<T> {
+  const out: Partial<T> = {};
+  for (const k of keys) if (source?.[k] != null) out[k] = source[k];
+  return out;
+}
+
 /** Drop null/undefined so Sanity gaps fall through to fallback copy. */
 function compact<T extends object>(value: T): Partial<T> {
   return Object.fromEntries(
@@ -51,15 +58,9 @@ export async function getLandingContent(): Promise<LandingContent> {
     merged.founders = merged.founders.map((founder, i) => ({
       ...(fallbackContent.founders[i] ?? {}),
       ...compact(founder),
-      // Pinned like the copy fields above: the artboard chip labels
-      // ("Design" / "Engineering") replace pre-rebrand CMS roles, and the
-      // names match the site copy until the Studio entries are updated.
-      ...(fallbackContent.founders[i]?.role
-        ? { role: fallbackContent.founders[i].role }
-        : {}),
-      ...(fallbackContent.founders[i]?.name
-        ? { name: fallbackContent.founders[i].name }
-        : {}),
+      // Pinned like the copy fields above: name, role chip and bio are owned
+      // by the code (see content.ts and the Voice rules in DESIGN.md).
+      ...pick(fallbackContent.founders[i], ["name", "role", "bio"]),
     })) as LandingContent["founders"];
     return merged;
   } catch (error) {
