@@ -30,7 +30,36 @@ export async function getLandingContent(): Promise<LandingContent> {
   try {
     const data = await client.fetch(landingPageQuery);
     if (!data) return fallbackContent;
-    return { ...fallbackContent, ...compact(data) };
+    const cleaned = compact(data);
+    // The Studio still holds pre-rebrand copy for these fields; pin the
+    // artboard copy from fallbackContent until the CMS is updated, then
+    // delete this list so the Studio owns them again.
+    for (const key of [
+      "heroEyebrow",
+      "heroHeading",
+      "heroSubheading",
+      "foundersHeading",
+      "foundersIntro",
+    ] as const) {
+      delete cleaned[key];
+    }
+    const merged = { ...fallbackContent, ...cleaned };
+    // Founders merge per-field too, so a CMS entry without a photo (or any
+    // other field) falls back to the defaults instead of dropping it.
+    merged.founders = merged.founders.map((founder, i) => ({
+      ...(fallbackContent.founders[i] ?? {}),
+      ...compact(founder),
+      // Pinned like the copy fields above: the artboard chip labels
+      // ("Design" / "Engineering") replace pre-rebrand CMS roles, and the
+      // names match the site copy until the Studio entries are updated.
+      ...(fallbackContent.founders[i]?.role
+        ? { role: fallbackContent.founders[i].role }
+        : {}),
+      ...(fallbackContent.founders[i]?.name
+        ? { name: fallbackContent.founders[i].name }
+        : {}),
+    })) as LandingContent["founders"];
+    return merged;
   } catch (error) {
     console.warn(
       "Sanity fetch failed at build time; using fallback content.",

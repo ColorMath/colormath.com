@@ -1,42 +1,48 @@
 # Design
 
+Source of truth: the brand artboards in `screenshots/` (Artboard 1 copy-100.jpg = homepage, Artboard 1-100.jpg = case-study template). When this file and the artboards disagree, the artboards win.
+
 ## Theme
 
-Bauhaus print poster, set in pastel: flat geometric shapes, black linework, warm cream paper. Light theme only (it is printed matter; a dark mode would break the paper metaphor). The existing brand supplies the system: a "color/math" black serif wordmark, a pencil-shaped logo mark built from a triangle + circle + shield, and a repeating pattern tile.
+Bold color-field poster: each section is a full-bleed drench in one saturated brand color, with a straight cut between fields. Serif conviction on top of flat, loud color. Light theme only.
 
 ## Color
 
-Strategy: **Full palette** (Bauhaus-poster reference, pastel register). Every section commits to a role; pastels are surfaces and shapes, black is ink, cream is paper.
+Strategy: **Drenched, per section**. The page reads as stacked color fields: red hero, violet founders, paper work/services band, yellow contact.
 
-- `--paper`: oklch(97.5% 0.008 75) — warm cream, page background (from brand assets)
-- `--ink`: oklch(22% 0.01 60) — warm near-black, all text and linework
-- `--butter`: oklch(92% 0.07 85) — pale yellow (logo triangle)
-- `--peony`: oklch(88% 0.06 5) — pink (logo wedge)
-- `--periwinkle`: oklch(83% 0.06 265) — pale blue (logo circle-left)
-- `--mauve`: oklch(68% 0.06 330) — dusty purple (logo circle-right)
-- `--marigold`: oklch(82% 0.13 75) — saturated yellow-orange (pattern ground); the CTA color
+- `--red`: #dd0a12 (hero field, "Design" chip; deep variant `--red-deep` #a90810 for the hero gradient)
+- `--violet`: #6018f8 — electric violet (founders field, primary work tile)
+- `--yellow`: #f9cd3f (contact field, "Engineering" chip, hero CTA)
+- `--ink`: #211f1e; `--coal`: #282828 (dark case-study tiles)
+- `--paper`: #fdfcfa (light sections; the case-study template uses #f0f0f0)
 
-Rules: text is always ink on paper or ink on pastel (all pastels pass AA against ink). Pastels never used for text. Marigold is reserved for the single email CTA and small punctuation moments.
+Rules: white text on red and violet (both pass AA), ink text on yellow and paper. Chips pair founder roles to brand colors: Design = red, Engineering = yellow.
 
 ## Typography
 
-- Display: **Bricolage Grotesque** (Google Fonts, variable) — chunky, warm grotesque with personality; headings, nav, buttons. Weight 600–800, tight tracking on large sizes.
-- Body: **Hanken Grotesk** (Google Fonts, variable) — humanist, quiet, precise. Weight 400/500, 65ch max line length.
-- The serif voice belongs exclusively to the wordmark image; no serif webfont, so the wordmark stays a distinct brand moment.
-- Scale: fluid clamp() steps, ratio ≥1.3. Hero display ~clamp(2.8rem, 8vw, 6rem).
+- Display: **PT Serif** bold — headlines, names, nav, buttons, chips. The wordmark serif voice extended to the page. Hero ~clamp(2.5rem, 5.5vw, 4.25rem), leading ~1.06.
+- Body: **Fira Sans Condensed** 400/500 — condensed grotesque counterpoint, 46–52ch measure.
+- The wordmark is the inline SVG (`app/components/Wordmark.tsx`, from `screenshots/colormath logo.svg`), recolorable via `currentColor`: white on color fields, ink on light.
+
+## Imagery
+
+- Section backgrounds are exported gradient plates from the brand files: `public/img/hero-red.png` (purple-to-red, hero) and `public/img/room-blue.png` (violet room with horizon, founders), applied as cover backgrounds over the matching solid fallback color.
+- Founder photos are full-body cutouts (transparent PNGs in `public/img/`, exported from the brand files), floated directly on the room background, no frames or crops.
+- The mockup's hero photo (blue hands / yellow glass) is a third-party image: local reference only, never commit or ship it. The hero is text-only until licensed imagery exists.
+- Case-study template: duotone-violet engraving collage hero, per the second artboard.
 
 ## Geometry & ornament
 
-- Linework: 2px solid ink borders, sharp corners (radius 0 to 4px max) — printed-poster edges, not soft SaaS pills.
-- The logo's shapes (half-circle, triangle, quarter-circle wedges) are the ornament vocabulary for section dividers and accents; build them in CSS/SVG, flat fills + ink strokes.
-- The pattern tile (public/img/pattern.png) appears as a band, never a full-page background.
+- Sharp corners everywhere; no borders, no shadows. Color fields meet in straight cuts.
+- Role chips: solid color block behind serif bold text, tight padding.
+- Work/services tiles: flat color blocks (violet, red, yellow) in a mosaic grid, one large + stacked small.
 
 ## Motion
 
-One staggered fade-up on first load (hero only), 500ms, ease-out-quint. No scroll-triggered choreography. Full stop under prefers-reduced-motion.
+One staggered fade-up on first load (hero only), 650ms, ease-out. Full stop under prefers-reduced-motion.
 
 ## Components
 
-- Buttons: ink background / paper text, or marigold background / ink text for the primary email CTA. 2px ink border, sharp corners, subtle 2px translate press.
-- Section headers: oversized Bricolage heading, left-aligned; no repeated kicker-label grammar.
-- Founder blocks: asymmetric two-up, pastel shape behind each portrait (periwinkle for one, mauve for the other, echoing the logo circle halves).
+- Buttons: flat color block, serif bold label, no border or radius. Yellow/ink on red; ink/paper on yellow.
+- Nav items: serif bold, prefixed with a slash (`/ Work with Us`), echoing the wordmark slash.
+- Founder blocks: photo cutout, serif name, color chip role, condensed bio.

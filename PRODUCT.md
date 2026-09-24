@@ -27,7 +27,7 @@ Warm, precise, playful. The confidence of two operators who have already built a
 1. **The pairing is the product.** Every section should reinforce design × engineering as one intertwined practice, not two service lines.
 2. **Practice what you preach.** The page itself is the portfolio; craft in type, color, and geometry is the proof of competence.
 3. **Ten-second clarity.** A visitor should be able to say what ColorMath is and who's behind it without scrolling past the first fold.
-4. **Warmth over polish.** Pastel, geometric, human. Never sterile, never loud.
+4. **Bold over polish.** Saturated color fields, serif conviction, human cutout photography. Confident and loud, never sterile.
 5. **One ask.** The only conversion is an email conversation.
 
 ## Accessibility & Inclusion
