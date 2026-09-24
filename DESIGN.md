@@ -41,6 +41,14 @@ Rules: white text on red and violet (both pass AA), ink text on yellow and paper
 
 One staggered fade-up on first load (hero only), 650ms, ease-out. Full stop under prefers-reduced-motion.
 
+## Voice
+
+- The studio speaks as **we** everywhere: headings, body, CTAs, forms ("What we do", "Tell us what you're building").
+- Founder bios are pronoun-free résumé lines (no "she"/"he", no "I"), so they sit inside the "we" page without switching narrator.
+- Don't name the founders in the third person inside "we" copy: "both of us", not "Jessica and Craig".
+- The hero may open with the brand name ("Color/Math is a…"); that's the only third-person reference to the studio.
+- Spelling: **multi-disciplinary** (hyphenated), matching the hero and the share preview.
+
 ## Components
 
 - Buttons: flat color block, serif bold label, no border or radius. Yellow/ink on red; ink/paper on yellow.

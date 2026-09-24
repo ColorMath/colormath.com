@@ -21,7 +21,7 @@ export default function ContactPage() {
         </h1>
         <p className="mt-6 mb-12 max-w-[45ch] text-lg leading-relaxed md:text-xl">
           Tell us what you&apos;re building. Your message goes straight to
-          Jessica and Craig, and we reply personally.
+          both of us, and we reply personally.
         </p>
         <ContactForm />
       </main>
