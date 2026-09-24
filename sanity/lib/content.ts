@@ -78,7 +78,6 @@ export const fallbackContent: LandingContent = {
       photoUrl: "/img/jessica.png",
       video: {
         webm: "/video/chair-clip-jess.webm",
-        mov: "/video/chair-clip-jess.mov",
         still: "/video/chair-clip-jess-still.webp",
         start: 42.04, // loop frame 1260: both feet in
         aspect: "822 / 1468",
@@ -92,7 +91,6 @@ export const fallbackContent: LandingContent = {
       photoUrl: "/img/craig.png",
       video: {
         webm: "/video/chair-clip-craig.webm",
-        mov: "/video/chair-clip-craig.mov",
         still: "/video/chair-clip-craig-still.webp",
         start: 0, // 20s loop chosen to start and end settled: to camera, ankles crossed
         aspect: "822 / 1468",
