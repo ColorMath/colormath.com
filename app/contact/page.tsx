@@ -3,7 +3,7 @@ import { Wordmark } from "../components/Wordmark";
 import { ContactForm } from "./ContactForm";
 
 export const metadata: Metadata = {
-  title: "Talk to Us · Color/Math",
+  title: "Contact · Color/Math",
   description: "Tell us what you're building. The message goes straight to both founders.",
 };
 

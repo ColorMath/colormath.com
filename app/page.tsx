@@ -138,7 +138,7 @@ export default async function Home() {
             <span aria-hidden className="mr-1.5">
               /
             </span>
-            Talk to Us
+            Contact
           </a>
         </header>
 

@@ -44,5 +44,6 @@ One staggered fade-up on first load (hero only), 650ms, ease-out. Full stop unde
 ## Components
 
 - Buttons: flat color block, serif bold label, no border or radius. Yellow/ink on red; ink/paper on yellow.
-- Nav items: serif bold, prefixed with a slash (`/ Work with Us`), echoing the wordmark slash.
+- Nav items: serif bold, prefixed with a slash (`/ Contact`), echoing the wordmark slash. Hover/focus: a yellow highlight swipes in left to right and the label turns ink (`.nav-swipe`).
+- **Nav label = route name, always.** The slash already reads like a path, so the label after it must be the route's name, word for word: `/contact/` → `/ Contact`. Pick route names that work as labels rather than labels that drift from their routes. (Calls to action in page content, like the "Talk to us" button, are not nav and may say more.)
 - Founder blocks: photo cutout, serif name, color chip role, condensed bio.
