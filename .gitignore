@@ -12,7 +12,19 @@ node_modules/
 # sanity
 /.sanity/
 
+# brand reference comps (contain unlicensed placeholder imagery)
+/screenshots/
+
 # misc
 .DS_Store
 *.tsbuildinfo
 next-env.d.ts
+
+# raw media: camera originals and review captures stay local; the site ships
+# the web-encoded copies in public/
+/assets/img/Blocks.MP4
+/assets/img/Screenshots/
+/assets/img/strategy.jpg
+/assets/img/design.jpg
+/assets/img/engineering.jpg
+/assets/video/

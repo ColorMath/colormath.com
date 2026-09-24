@@ -1,28 +1,31 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Hanken_Grotesk } from "next/font/google";
+import { PT_Serif, Fira_Sans_Condensed } from "next/font/google";
 import "./globals.css";
 
-const bricolage = Bricolage_Grotesque({
+const ptSerif = PT_Serif({
   subsets: ["latin"],
-  variable: "--font-bricolage",
+  weight: ["400", "700"],
+  variable: "--font-pt-serif",
 });
 
-const hanken = Hanken_Grotesk({
+const fira = Fira_Sans_Condensed({
   subsets: ["latin"],
-  variable: "--font-hanken",
+  weight: ["400", "500", "700"],
+  variable: "--font-fira",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://colormath.com"),
-  title: "ColorMath",
-  description: "A product design & engineering studio.",
+  title: "Color/Math",
+  description:
+    "A design studio that helps teams design and build products that add real value in the age of AI.",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${hanken.variable}`}>
+    <html lang="en" className={`${ptSerif.variable} ${fira.variable}`}>
       <body className="bg-paper font-body text-ink antialiased">
         {children}
       </body>

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { getLandingContent } from "@/sanity/lib/fetch";
 import type { Founder, Service } from "@/sanity/lib/content";
+import { Wordmark } from "./components/Wordmark";
+import { LoopVideo } from "./components/LoopVideo";
+import { CutoutVideo } from "./components/CutoutVideo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getLandingContent();
@@ -12,190 +14,258 @@ export async function generateMetadata(): Promise<Metadata> {
       title: content.seoTitle,
       description: content.seoDescription,
       url: "https://colormath.com",
-      images: ["/img/logo.png"],
     },
   };
 }
 
-const glyphs = [
-  // Half circle, periwinkle
-  <svg key="0" viewBox="0 0 40 40" className="h-9 w-9" aria-hidden>
-    <path
-      d="M2 26 A18 18 0 0 1 38 26 Z"
-      fill="var(--color-periwinkle)"
-      stroke="var(--color-ink)"
-      strokeWidth="2.5"
-    />
-  </svg>,
-  // Triangle, butter
-  <svg key="1" viewBox="0 0 40 40" className="h-9 w-9" aria-hidden>
-    <path
-      d="M20 6 L37 34 L3 34 Z"
-      fill="var(--color-butter)"
-      stroke="var(--color-ink)"
-      strokeWidth="2.5"
-    />
-  </svg>,
-  // Quarter wedge, peony
-  <svg key="2" viewBox="0 0 40 40" className="h-9 w-9" aria-hidden>
-    <path
-      d="M6 34 A28 28 0 0 1 34 6 L34 34 Z"
-      fill="var(--color-peony)"
-      stroke="var(--color-ink)"
-      strokeWidth="2.5"
-    />
-  </svg>,
-];
-
-const founderCircle = ["bg-periwinkle", "bg-mauve", "bg-peony", "bg-butter"];
-
-function EmailButton({ email, label }: { email: string; label: string }) {
+/** Renders the artboard's bold-serif emphasis inside the hero body copy. */
+function HeroSubheading({ text }: { text: string }) {
+  const phrase = "helps teams design and build great products";
+  const at = text.indexOf(phrase);
+  if (at === -1) return text;
   return (
-    <a
-      href={`mailto:${email}`}
-      className="inline-block border-2 border-ink bg-marigold px-7 py-3.5 font-display text-lg font-bold shadow-[4px_4px_0_0_var(--color-ink)] transition-[box-shadow,translate] duration-150 ease-out hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_var(--color-ink)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none"
-    >
-      {label}
-    </a>
+    <>
+      {text.slice(0, at)}
+      <strong className="font-display font-bold">{phrase}</strong>
+      {text.slice(at + phrase.length)}
+    </>
   );
 }
 
-function initials(name: string) {
-  const parts = name.split(" ").filter(Boolean);
-  if (parts.length === 0) return "";
-  const first = parts[0][0];
-  const last = parts.length > 1 ? parts[parts.length - 1][0] : "";
-  return `${first}${last}`;
+const roleChip = [
+  "bg-red text-paper",
+  "bg-yellow text-ink",
+  "bg-paper text-ink",
+];
+
+function FounderImage({
+  founder,
+  className,
+}: {
+  founder: Founder;
+  className?: string;
+}) {
+  if (founder.video) {
+    return (
+      <CutoutVideo
+        webm={founder.video.webm}
+        still={founder.video.still}
+        start={founder.video.start}
+        label={founder.name}
+        className={`w-full max-w-[380px] ${className ?? ""}`}
+        style={{ aspectRatio: founder.video.aspect }}
+      />
+    );
+  }
+  if (founder.photoUrl) {
+    return (
+      /* eslint-disable-next-line @next/next/no-img-element */
+      <img
+        src={founder.photoUrl}
+        alt={founder.name}
+        className={`w-full max-w-[380px] ${className ?? ""}`}
+      />
+    );
+  }
+  return (
+    <div
+      aria-hidden
+      className={`flex aspect-[3/4] w-full max-w-[260px] items-center justify-center bg-[#4b0fd0] font-display text-7xl font-bold ${className ?? ""}`}
+    >
+      {founder.name
+        .split(" ")
+        .filter((part) => part[0] === part[0]?.toUpperCase())
+        .map((part) => part[0])
+        .slice(0, 2)
+        .join("")}
+    </div>
+  );
 }
+
+/**
+ * The room's floor line, as a % of the left founder's portrait height: set
+ * to land at Craig's knee level (both portraits share a top edge and width).
+ * Re-measure if either portrait's crop changes.
+ */
+const FLOOR_LINE_AT = 51.1;
+
+/**
+ * The floor line's height within the founders row, for placing the intro text
+ * on it. Mirrors the row's geometry: the left portrait fills its 1fr column of
+ * a 1fr/1.15fr/1fr grid with 2.5rem gaps (100cqw = the grid, an @container),
+ * capped at 380px, shifted up 4rem by md:-mt-16.
+ */
+function floorLineY(founder?: Founder): string {
+  const [w, h] = (founder?.video?.aspect ?? "822 / 1468").split("/").map(Number);
+  const width = "min((100cqw - 5rem) / 3.15, 380px)";
+  return `calc(-4rem + ${width} * ${((h / w) * FLOOR_LINE_AT) / 100})`;
+}
+
+/**
+ * Service panels: photo on top; the panel's brand color (violet = both of
+ * us, red = design, yellow = engineering) carried by the text band below.
+ * Photos are code-owned and keyed by title, like the founder videos.
+ */
+const serviceImage: Record<string, string> = {
+  "Product strategy": "/img/service-strategy.webp",
+  Design: "/img/service-design.webp",
+  Engineering: "/img/service-engineering.webp",
+};
+
+const serviceBand = [
+  "bg-violet text-paper",
+  "bg-red text-paper",
+  "bg-yellow text-ink",
+];
 
 export default async function Home() {
   const content = await getLandingContent();
 
   return (
     <>
-      <header className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-3 px-6 pt-7">
-        <a href="#top" aria-label="ColorMath home">
-          <Image
-            src="/img/wordmark-mark.png"
-            alt="color/math"
-            width={908}
-            height={332}
-            priority
-            className="h-9 w-auto"
-          />
-        </a>
-        {content.contactEmail && (
-          <a
-            href={`mailto:${content.contactEmail}`}
-            className="font-medium underline decoration-2 underline-offset-4 hover:decoration-marigold"
-          >
-            {content.contactEmail}
+      {/* Red field: header + hero */}
+      <div className="relative overflow-x-clip bg-red bg-[url('/img/hero-red.png')] bg-cover bg-center text-paper">
+        <header className="relative z-20 mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-3 px-6 pt-7">
+          <a href="#top" aria-label="Color/Math home">
+            <Wordmark className="h-10 w-auto" />
           </a>
-        )}
-      </header>
+          <a
+            href="/contact/"
+            className="nav-swipe font-display text-lg font-bold"
+          >
+            <span aria-hidden className="mr-1.5">
+              /
+            </span>
+            Talk to Us
+          </a>
+        </header>
 
-      <main id="top">
-        {/* Hero */}
-        <section className="mx-auto grid w-full max-w-6xl items-center gap-12 px-6 pb-24 pt-16 md:grid-cols-[7fr_4fr] md:pb-32 md:pt-24">
-          <div>
-            <p className="rise font-medium text-lg">{content.heroEyebrow}</p>
-            <h1 className="rise rise-2 mt-4 font-display text-[clamp(2.9rem,8vw,5.75rem)] font-extrabold leading-[0.98] tracking-tight">
-              {content.heroHeading}
-            </h1>
-            <p className="rise rise-3 mt-6 max-w-[52ch] text-lg leading-relaxed md:text-xl">
-              {content.heroSubheading}
-            </p>
-            {content.contactEmail && (
-              <div className="rise rise-4 mt-10">
-                <EmailButton email={content.contactEmail} label="Email us" />
+        <section
+          id="top"
+          className="relative z-20 mx-auto w-full max-w-6xl px-6 pt-10 pb-10 md:pt-16 md:pb-20"
+        >
+          <p className="font-display text-xl font-bold md:text-2xl">
+            {content.heroEyebrow}
+          </p>
+          <h1 className="mt-2 max-w-[24ch] font-display text-[clamp(2.5rem,5.5vw,4.25rem)] font-bold leading-[1.06]">
+            {content.heroHeading}
+          </h1>
+          <p className="mt-6 max-w-[38rem] text-base leading-relaxed md:text-lg">
+            <HeroSubheading text={content.heroSubheading} />
+          </p>
+          {content.contactEmail && (
+            <div className="mt-10">
+              <a
+                href={`mailto:${content.contactEmail}`}
+                className="inline-block bg-yellow px-7 py-3.5 font-display text-lg font-bold text-ink transition-colors hover:bg-paper"
+              >
+                Email us
+              </a>
+            </div>
+          )}
+        </section>
+
+        {/*
+          Blocks film: its red-wall/violet-table horizon sits at 55.9% of the
+          frame, pinned to the hero's bottom edge so the table runs on into the
+          violet section. Desktop: 16:9 at 71vw, nudged just past the right
+          edge (clipped by the wrapper; the outermost block stays in frame),
+          dropped by the table's share (44.1%) of its own height. Both copies
+          are mirrored (-scale-x-100) so the hands enter from the left.
+          Mobile: 4:3 crop under the
+          text (object-position keeps the horizon row fixed), overhanging by
+          44.1% of its height, i.e. 33.1% of its width.
+        */}
+        <LoopVideo
+          src="/video/blocks.mp4"
+          poster="/video/blocks.jpg"
+          className="blocks-fade absolute right-[-1.5vw] bottom-0 z-10 hidden aspect-video w-[71vw] translate-y-[44.1%] -scale-x-100 object-cover md:block"
+          style={{ objectPosition: "50% 55.9%" }}
+        />
+        <LoopVideo
+          src="/video/blocks.mp4"
+          poster="/video/blocks.jpg"
+          className="blocks-fade-mobile relative z-10 -mb-[33.1%] block aspect-[4/3] w-full -scale-x-100 object-cover md:hidden"
+          style={{ objectPosition: "50% 55.9%" }}
+        />
+      </div>
+
+      {/* Violet field: founders */}
+      <section
+        aria-labelledby="founders-heading"
+        className="room relative isolate overflow-hidden bg-violet text-paper"
+      >
+        <div className="mx-auto w-full max-w-7xl px-6 pt-[calc(33.1vw+2.5rem)] pb-20 md:pt-[24vw] lg:pt-[23vw] md:pb-28">
+          <div
+            className="@container grid items-start gap-x-10 gap-y-10 md:grid-cols-[1fr_1.15fr_1fr]"
+            style={{ "--floor-y": floorLineY(content.founders[0]) } as React.CSSProperties}
+          >
+            {content.founders[0] && (
+              <div className="relative mx-auto hidden md:-mt-16 md:block">
+                <FounderImage
+                  founder={content.founders[0]}
+                  className="relative z-10"
+                />
+                {/*
+                  The room's floor line, pinned to the portraits (see
+                  FLOOR_LINE_AT) so it tracks them at every width.
+                */}
+                <div
+                  aria-hidden
+                  className="room-floor"
+                  style={{ top: `${FLOOR_LINE_AT}%` }}
+                />
               </div>
             )}
-          </div>
-          <div className="rise rise-3 hidden justify-center md:flex">
-            <Image
-              src="/img/logo-mark.png"
-              alt=""
-              aria-hidden
-              width={256}
-              height={344}
-              priority
-              className="w-[min(19rem,100%)]"
-            />
-          </div>
-        </section>
-
-        {/* Services */}
-        <section
-          aria-labelledby="services-heading"
-          className="mx-auto w-full max-w-6xl px-6 pb-24 md:pb-32"
-        >
-          <h2
-            id="services-heading"
-            className="font-display text-4xl font-bold tracking-tight md:text-5xl"
-          >
-            {content.servicesHeading}
-          </h2>
-          <ul className="mt-10 border-b-2 border-ink">
-            {content.services.map((service: Service, i: number) => (
-              <li
-                key={service.title}
-                className="grid gap-x-8 gap-y-3 border-t-2 border-ink py-8 md:grid-cols-[3rem_1fr_2fr] md:py-10"
-              >
-                {glyphs[i % glyphs.length]}
-                <h3 className="font-display text-2xl font-semibold md:text-3xl">
-                  {service.title}
-                </h3>
-                <p className="max-w-[60ch] text-lg leading-relaxed">
-                  {service.description}
+            {/*
+              From md up, the heading sits just above the floor line and the
+              body just below it; stacked, it's simply the first thing.
+            */}
+            <div className="relative z-10 md:pt-[var(--floor-y)]">
+              <div className="md:relative">
+                <h2
+                  id="founders-heading"
+                  className="font-display text-2xl font-bold leading-tight [text-wrap:balance] md:absolute md:inset-x-0 md:bottom-full md:mb-5 md:text-[1.75rem]"
+                >
+                  {content.foundersHeading}
+                </h2>
+                <p className="mt-5 text-base leading-relaxed md:mt-5">
+                  {content.foundersIntro}
                 </p>
-              </li>
-            ))}
-          </ul>
-        </section>
+              </div>
+            </div>
+            {content.founders[1] && (
+              <FounderImage
+                founder={content.founders[1]}
+                className="relative z-10 mx-auto hidden md:-mt-[calc(4rem+10px)] md:block"
+              />
+            )}
+          </div>
 
-        {/* Founders */}
-        <section
-          aria-labelledby="founders-heading"
-          className="mx-auto w-full max-w-6xl px-6 pb-24 md:pb-36"
-        >
-          <h2
-            id="founders-heading"
-            className="font-display text-4xl font-bold tracking-tight md:text-5xl"
-          >
-            {content.foundersHeading}
-          </h2>
-          <p className="mt-4 max-w-[52ch] text-lg leading-relaxed">
-            {content.foundersIntro}
-          </p>
-          <div className="mt-14 grid gap-14 md:grid-cols-2 md:gap-10">
+          {/*
+            relative z-10: the row above is an @container, which makes it a
+            stacking context that holds the floor layer; without this, Safari
+            paints that layer over the bios.
+          */}
+          <div className="relative z-10 mt-14 grid gap-x-16 gap-y-14 md:mt-4 md:grid-cols-2">
             {content.founders.map((founder: Founder, i: number) => (
               <article key={founder.name}>
-                {founder.photoUrl ? (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img
-                    src={founder.photoUrl}
-                    alt={founder.name}
-                    className="h-32 w-32 rounded-full border-2 border-ink object-cover"
-                  />
-                ) : (
-                  <div
-                    aria-hidden
-                    className={`flex h-32 w-32 items-center justify-center rounded-full border-2 border-ink font-display text-4xl font-bold ${founderCircle[i % founderCircle.length]}`}
-                  >
-                    {initials(founder.name)}
-                  </div>
-                )}
-                <h3 className="mt-6 font-display text-3xl font-bold">
+                <FounderImage founder={founder} className="mb-6 md:hidden" />
+                <h3 className="font-display text-3xl font-bold md:text-4xl">
                   {founder.name}
                 </h3>
-                <p className="mt-1 text-lg font-medium italic">{founder.role}</p>
-                <p className="mt-4 max-w-[48ch] text-lg leading-relaxed">
+                <p
+                  className={`mt-2 inline-block px-2.5 py-0.5 font-display text-xl font-bold ${roleChip[i % roleChip.length]}`}
+                >
+                  {founder.role}
+                </p>
+                <p className="mt-5 max-w-[52ch] text-lg leading-relaxed">
                   {founder.bio}
                 </p>
                 {founder.url && (
                   <a
                     href={founder.url}
-                    className="mt-4 inline-block font-medium underline decoration-2 underline-offset-4 hover:decoration-marigold"
+                    className="mt-4 inline-block font-medium underline decoration-2 underline-offset-4 hover:decoration-yellow"
                   >
                     {founder.url.replace(/^https?:\/\//, "").replace(/\/$/, "")}
                   </a>
@@ -203,43 +273,82 @@ export default async function Home() {
               </article>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Pattern band */}
-        <div
-          aria-hidden
-          className="h-24 border-y-2 border-ink bg-[url('/img/pattern.png')] bg-cover bg-center md:h-32"
-        />
+      {/* Paper field: services as brand tiles */}
+      <section aria-labelledby="services-heading" className="bg-paper">
+        <div className="mx-auto w-full max-w-6xl px-6 py-20 md:py-28">
+          <h2
+            id="services-heading"
+            className="font-display text-4xl font-bold md:text-5xl"
+          >
+            {content.servicesHeading}
+          </h2>
+          <ul className="mt-12 grid gap-5 md:grid-cols-3">
+            {content.services.map((service: Service, i: number) => {
+              const band = serviceBand[i % serviceBand.length];
+              const image = serviceImage[service.title];
+              return (
+                <li
+                  key={service.title}
+                  className="flex flex-col overflow-hidden"
+                >
+                  {image && (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={image}
+                      alt=""
+                      loading="lazy"
+                      className="aspect-[3/2] w-full object-cover"
+                    />
+                  )}
+                  <div className={`flex-1 p-8 ${band}`}>
+                    <h3 className="font-display text-2xl font-bold md:text-3xl">
+                      {service.title}
+                    </h3>
+                    <p className="mt-3 max-w-[40ch] text-lg leading-snug">
+                      {service.description}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
 
-        {/* Contact */}
-        <section
-          aria-labelledby="contact-heading"
-          className="border-b-2 border-ink bg-butter"
-        >
-          <div className="mx-auto w-full max-w-6xl px-6 py-20 md:py-28">
-            <h2
-              id="contact-heading"
-              className="max-w-[18ch] font-display text-4xl font-bold tracking-tight md:text-6xl"
+      {/* Yellow field: contact */}
+      <section aria-labelledby="contact-heading" className="bg-yellow text-ink">
+        <div className="mx-auto w-full max-w-6xl px-6 py-20 md:py-28">
+          <h2
+            id="contact-heading"
+            className="max-w-[20ch] font-display text-4xl font-bold md:text-6xl"
+          >
+            {content.contactHeading}
+          </h2>
+          <p className="mt-6 max-w-[45ch] text-lg leading-relaxed md:text-xl">
+            {content.contactBody}
+          </p>
+          <a
+            href="/contact/"
+            className="mt-10 mr-4 inline-block bg-ink px-7 py-3.5 font-display text-lg font-bold text-paper transition-colors hover:bg-coal"
+          >
+            Talk to us
+          </a>
+          {content.contactEmail && (
+            <a
+              href={`mailto:${content.contactEmail}`}
+              className="mt-10 inline-block bg-ink px-7 py-3.5 font-display text-lg font-bold text-paper transition-colors hover:bg-coal"
             >
-              {content.contactHeading}
-            </h2>
-            <p className="mt-5 max-w-[45ch] text-lg leading-relaxed md:text-xl">
-              {content.contactBody}
-            </p>
-            {content.contactEmail && (
-              <div className="mt-10">
-                <EmailButton
-                  email={content.contactEmail}
-                  label={`Email ${content.contactEmail}`}
-                />
-              </div>
-            )}
-          </div>
-        </section>
-      </main>
+              Email {content.contactEmail}
+            </a>
+          )}
+        </div>
+      </section>
 
       <footer className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-10 text-sm">
-        <p>© {new Date().getFullYear()} ColorMath</p>
+        <p>© {new Date().getFullYear()} Color/Math</p>
         <nav className="flex gap-6" aria-label="Founders' sites">
           {content.founders
             .filter((f: Founder) => f.url)
@@ -247,7 +356,7 @@ export default async function Home() {
               <a
                 key={f.url}
                 href={f.url}
-                className="underline decoration-2 underline-offset-4 hover:decoration-marigold"
+                className="underline decoration-2 underline-offset-4 hover:decoration-violet"
               >
                 {f.name}
               </a>

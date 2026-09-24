@@ -9,6 +9,18 @@ export type Founder = {
   bio: string;
   url?: string;
   photoUrl?: string;
+  /**
+   * Transparent looping portrait (person + chair, no background); code-owned,
+   * not in Sanity. Shown instead of the photo when present.
+   */
+  video?: {
+    webm: string;
+    /** Transparent WebP of one frame: what WebKit browsers show instead. */
+    still: string;
+    /** Seconds into the clip where `still` was taken; playback starts there. */
+    start: number;
+    aspect: string;
+  };
 };
 
 export type LandingContent = {
@@ -32,10 +44,10 @@ export type LandingContent = {
  * time), and as the per-field default for anything left empty in the Studio.
  */
 export const fallbackContent: LandingContent = {
-  heroEyebrow: "A product design & engineering collaboration studio",
-  heroHeading: "Products that add up.",
+  heroEyebrow: "It's faster than ever to build something.",
+  heroHeading: "It's harder than ever to build something great.",
   heroSubheading:
-    "ColorMath is a collaboration studio between two senior executives: a designer and an engineer who built, scaled, and sold a product together. Now they build with you.",
+    "Color/Math is a multi-disciplinary design studio that helps teams design and build great products that achieve business outcomes in the age of AI.",
   servicesHeading: "What we do",
   services: [
     {
@@ -54,19 +66,33 @@ export const fallbackContent: LandingContent = {
         "Architecture, AI, and production code that actually ships.",
     },
   ],
-  foundersHeading: "Two people. One practice.",
+  foundersHeading: "Building great products (and teams) is an art and a science.",
   foundersIntro:
-    "Design and engineering aren't service lines here. They're the two of us, in the same room, on your problem.",
+    "We're operators who built software businesses that scaled to millions of users and went through successful exits. We're not “consultants in a corner”, we're hands-on builders who are focused on helping your team move fast with AI, in the right direction.",
   founders: [
     {
       name: "Jessica Tenuta",
-      role: "Design · the color",
+      role: "Design",
+      photoUrl: "/img/jessica.png",
+      video: {
+        webm: "/video/chair-clip-jess.webm",
+        still: "/video/chair-clip-jess-still.webp",
+        start: 42.04, // loop frame 1260: both feet in
+        aspect: "822 / 1468",
+      },
       bio: "Cofounder and Chief Product Officer of Packback, where she led product, design, and engineering teams and scaled the platform to 3M+ students through its 2024 acquisition. Forbes 30 Under 30, and once got Mark Cuban to invest on Shark Tank.",
       url: "https://jessicatenuta.com",
     },
     {
-      name: "Craig M Booth",
-      role: "Engineering · the math",
+      name: "Craig M. Booth",
+      role: "Engineering",
+      photoUrl: "/img/craig.png",
+      video: {
+        webm: "/video/chair-clip-craig.webm",
+        still: "/video/chair-clip-craig-still.webp",
+        start: 0, // 20s loop chosen to start and end settled: to camera, ankles crossed
+        aspect: "822 / 1468",
+      },
       bio: "Chief Technology Officer of Packback and a former computational astrophysicist who simulated galaxy formation on supercomputers before turning that rigor toward building products people learn with.",
       url: "https://craigmbooth.com",
     },
@@ -76,7 +102,7 @@ export const fallbackContent: LandingContent = {
     "The best projects start as conversations. Tell us what you're building.",
   // Empty hides every email CTA (header link, hero and contact buttons)
   contactEmail: "",
-  seoTitle: "ColorMath — A product design & engineering collaboration studio",
+  seoTitle: "Color/Math: a product design & engineering studio",
   seoDescription:
-    "ColorMath is a collaboration studio between two senior executives: designer Jessica Tenuta and engineer Craig M Booth. Color is design. Math is engineering.",
+    "Color/Math is a design studio that helps teams design and build products that add real value and achieve business outcomes in the age of AI. Founded by designer Jessica Tenuta and engineer Dr. Craig M. Booth.",
 };
