@@ -2,6 +2,40 @@
 
 import { useEffect, useRef, useState } from "react";
 
+/** How long a video may take to start before we give up and keep the still. */
+const START_TIMEOUT_MS = 8000;
+
+/**
+ * True when the frame's corners come out transparent, as they must: both clips
+ * are padded, so every corner is empty. A decoder that drops or misaligns the
+ * alpha channel (seen with HEVC on a real iPhone) paints them opaque.
+ */
+function alphaLooksRight(video: HTMLVideoElement): boolean {
+  const w = 48;
+  const h = Math.max(1, Math.round((w * video.videoHeight) / video.videoWidth));
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  if (!ctx) return true; // can't check; trust the browser
+  try {
+    ctx.drawImage(video, 0, 0, w, h);
+    const { data } = ctx.getImageData(0, 0, w, h);
+    let sum = 0;
+    let n = 0;
+    for (const [x0, y0] of [[0, 0], [w - 3, 0], [0, h - 3], [w - 3, h - 3]]) {
+      for (let y = y0; y < y0 + 3; y++)
+        for (let x = x0; x < x0 + 3; x++) {
+          sum += data[(y * w + x) * 4 + 3];
+          n++;
+        }
+    }
+    return sum / n < 24;
+  } catch {
+    return true; // canvas unreadable; nothing to go on
+  }
+}
+
 /**
  * A transparent portrait that starts life as its still.
  *
@@ -14,6 +48,9 @@ import { useEffect, useRef, useState } from "react";
  *   and would otherwise reveal the red backdrop as a fringe.
  * Reduced-motion visitors, engines that can play neither, and copies hidden
  * at this breakpoint keep the still and download nothing.
+ *
+ * Fallback: if the video errors, doesn't start within START_TIMEOUT_MS, or
+ * its first frame fails the corner-alpha check, the still comes back for good.
  */
 export function CutoutVideo({
   webm,
@@ -36,6 +73,18 @@ export function CutoutVideo({
 }) {
   const imgRef = useRef<HTMLImageElement>(null);
   const [source, setSource] = useState<string | null>(null);
+  const [failed, setFailed] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Start-up watchdog: no playback in time means back to the still.
+  useEffect(() => {
+    if (!source) return;
+    const timer = window.setTimeout(() => {
+      const v = videoRef.current;
+      if (!v || v.paused || v.readyState < 3) setFailed(true);
+    }, START_TIMEOUT_MS);
+    return () => window.clearTimeout(timer);
+  }, [source]);
 
   useEffect(() => {
     const img = imgRef.current;
@@ -57,9 +106,10 @@ export function CutoutVideo({
     }
   }, [webm, mov]);
 
-  if (source) {
+  if (source && !failed) {
     return (
       <video
+        ref={videoRef}
         src={source}
         poster={still}
         muted
@@ -73,6 +123,14 @@ export function CutoutVideo({
           const video = e.currentTarget;
           video.currentTime = start;
           void video.play().catch(() => {});
+        }}
+        onError={() => setFailed(true)}
+        onPlaying={(e) => {
+          const video = e.currentTarget;
+          // Check a real decoded frame, a moment after playback begins.
+          window.setTimeout(() => {
+            if (!alphaLooksRight(video)) setFailed(true);
+          }, 300);
         }}
       />
     );
