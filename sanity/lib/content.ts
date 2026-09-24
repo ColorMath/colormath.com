@@ -103,5 +103,5 @@ export const fallbackContent: LandingContent = {
   // Empty hides every email CTA (header link, hero and contact buttons)
   contactEmail: "",
   seoTitle: "Color/Math",
-  seoDescription: "Multidisciplinary design studio.",
+  seoDescription: "Multi-disciplinary design studio.",
 };
