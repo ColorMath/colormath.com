@@ -14,6 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
       title: content.seoTitle,
       description: content.seoDescription,
       url: "https://colormath.com",
+      // Page-level openGraph replaces the layout's wholesale, so repeat the image.
+      images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Color/Math" }],
     },
   };
 }

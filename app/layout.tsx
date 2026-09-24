@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   title: "Color/Math",
   description:
     "A design studio that helps teams design and build products that add real value in the age of AI.",
+  // Link previews (Slack, iMessage, LinkedIn, X…): a frame of the Blocks film.
+  openGraph: { images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Color/Math" }] },
+  twitter: { card: "summary_large_image", images: ["/og.jpg"] },
 };
 
 export default function RootLayout({
