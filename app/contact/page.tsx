@@ -15,7 +15,7 @@ export default function ContactPage() {
           <Wordmark className="h-10 w-auto" />
         </a>
       </header>
-      <main className="mx-auto w-full max-w-6xl px-6 pt-14 pb-24 md:pt-20">
+      <main id="main" tabIndex={-1} className="mx-auto w-full max-w-6xl px-6 pt-14 pb-24 outline-none md:pt-20">
         <h1 className="max-w-[20ch] font-display text-4xl font-bold md:text-6xl">
           Talk to us
         </h1>

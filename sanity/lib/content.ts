@@ -87,7 +87,7 @@ export const fallbackContent: LandingContent = {
         start: 42.04, // loop frame 1260: both feet in
         aspect: "822 / 1468",
       },
-      bio: "Cofounder and Chief Product Officer of Packback, leading product, design, and engineering teams as the platform scaled to 3M+ students through its 2024 acquisition. Forbes 30 Under 30, and once got Mark Cuban to invest on Shark Tank.",
+      bio: "Cofounder and former Chief Product Officer of Packback, leading product, design, and engineering teams as the platform scaled to 3M+ students through its 2024 acquisition. Forbes 30 Under 30, and once got Mark Cuban to invest on Shark Tank.",
       url: "https://jessicatenuta.com",
     },
     {
@@ -102,7 +102,7 @@ export const fallbackContent: LandingContent = {
         start: 0, // 20s loop chosen to start and end settled: to camera, ankles crossed
         aspect: "822 / 1468",
       },
-      bio: "Chief Technology Officer of Packback and a former computational astrophysicist who simulated galaxy formation on supercomputers before turning that rigor toward building products people learn with.",
+      bio: "Former Chief Technology Officer of Packback and a computational astrophysicist who simulated galaxy formation on supercomputers before turning that rigor toward building award-winning products used by millions.",
       url: "https://craigmbooth.com",
     },
   ],

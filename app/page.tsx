@@ -4,6 +4,7 @@ import type { Founder, Service } from "@/sanity/lib/content";
 import { Wordmark } from "./components/Wordmark";
 import { LoopVideo } from "./components/LoopVideo";
 import { CutoutVideo } from "./components/CutoutVideo";
+import { LogoMarquee } from "./components/LogoMarquee";
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getLandingContent();
@@ -164,8 +165,9 @@ export default async function Home() {
   return (
     <>
       {/* Red field: header + hero */}
-      <div className="relative overflow-x-clip bg-red bg-[url('/img/hero-red.png')] bg-cover bg-center text-paper">
-        <header className="relative z-20 mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-3 px-6 pt-7">
+      {/* The header sits over the red hero but outside <main>, so it stays the
+          page's banner landmark and "Skip to content" jumps past it. */}
+      <header className="on-dark absolute inset-x-0 top-0 z-30 mx-auto flex w-full max-w-6xl text-paper flex-wrap items-center justify-between gap-x-8 gap-y-3 px-6 pt-7">
           <a href="#top" aria-label="Color/Math home">
             <Wordmark className="h-10 w-auto" />
           </a>
@@ -179,6 +181,9 @@ export default async function Home() {
             Contact
           </a>
         </header>
+
+      <main id="main" tabIndex={-1} className="outline-none">
+      <div className="relative overflow-x-clip bg-red bg-[url('/img/hero-red.png')] bg-cover bg-center pt-[4.25rem] text-paper">
 
         <section
           id="top"
@@ -359,6 +364,21 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Paper field: companies we've built with */}
+      <section aria-labelledby="companies-heading" className="bg-paper">
+        <div className="mx-auto w-full max-w-6xl px-6 pt-20 md:pt-24">
+          <h2
+            id="companies-heading"
+            className="font-display text-2xl font-bold md:text-3xl"
+          >
+            Where we&apos;ve built
+          </h2>
+        </div>
+        <div className="pt-4 [&>button]:mx-auto [&>button]:block [&>button]:w-full [&>button]:max-w-6xl [&>button]:px-6 [&>button]:text-left">
+          <LogoMarquee companies={companies} />
+        </div>
+      </section>
+
       {/* Yellow field: contact */}
       <section aria-labelledby="contact-heading" className="bg-yellow text-ink">
         <div className="mx-auto w-full max-w-6xl px-6 py-20 md:py-28">
@@ -388,43 +408,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Paper field: companies we've built with */}
-      <section aria-labelledby="companies-heading" className="bg-paper">
-        <div className="mx-auto w-full max-w-6xl px-6 pt-20 md:pt-24">
-          <h2
-            id="companies-heading"
-            className="font-display text-2xl font-bold md:text-3xl"
-          >
-            Where we&apos;ve built
-          </h2>
-        </div>
-        <div className="logo-marquee mt-10 overflow-hidden pb-8">
-          <ul className="logo-track">
-            {[0, 1].map((copy) =>
-              companies.map((c) => (
-                <li
-                  key={`${copy}-${c.name}`}
-                  aria-hidden={copy === 1 ? true : undefined}
-                  className="w-40 shrink-0 px-4 md:w-52 md:px-6"
-                >
-                  <a
-                    href={c.url}
-                    tabIndex={copy === 1 ? -1 : undefined}
-                    className="logo-link block text-ink/70 transition-colors hover:text-violet focus-visible:text-violet"
-                  >
-                    <span
-                      role="img"
-                      aria-label={c.name}
-                      className="logo-mark block aspect-[432/218] w-full"
-                      style={{ "--logo": `url(/logos/${c.logo}.svg)` } as React.CSSProperties}
-                    />
-                  </a>
-                </li>
-              ))
-            )}
-          </ul>
-        </div>
-      </section>
+      </main>
 
       <footer className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-10 text-sm">
         <p>© {new Date().getFullYear()} Color/Math</p>
