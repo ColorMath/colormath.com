@@ -117,6 +117,31 @@ function floorLineY(founder?: Founder): string {
 }
 
 /**
+ * Companies the founders have built and worked with. Logos are single-colour
+ * SVGs on a shared 432x218 canvas (so they read at the same optical size),
+ * painted with CSS masks so they take the page's colours. Jessica's come from
+ * jessicatenuta.com (traced from its PNGs); Narrative Science is Craig's
+ * (its domain now redirects to Tableau, so it links to its Wikipedia page).
+ */
+const companies = [
+  { name: "Packback", logo: "packback", url: "https://packback.co" },
+  { name: "Narrative Science", logo: "narrativescience", url: "https://en.wikipedia.org/wiki/Narrative_Science" },
+  { name: "Talas", logo: "talas", url: "https://talas.co" },
+  { name: "Factor 75", logo: "factor75", url: "https://www.factor75.com" },
+  { name: "Snapsheet", logo: "snapsheet", url: "https://www.snapsheetclaims.com" },
+  { name: "Fooda", logo: "fooda", url: "https://www.fooda.com" },
+  { name: "Lightbank", logo: "lightbank", url: "https://www.lightbank.com" },
+  { name: "Brad Keywell", logo: "bradkeywell", url: "https://www.bradkeywell.com" },
+  { name: "Keywell Foundation", logo: "keywellfoundation", url: "https://www.bradkeywell.com" },
+  { name: "Listen Ventures", logo: "listen", url: "https://www.listen.co" },
+  { name: "Intendent", logo: "intendent", url: "https://www.intendent.com" },
+  { name: "Impruve", logo: "impruve", url: "https://www.impruve.com" },
+  { name: "Runwayz", logo: "runwayz", url: "https://runwayz.com" },
+  { name: "Illinois State University", logo: "isu", url: "https://illinoisstate.edu" },
+  { name: "Technori", logo: "technori", url: "https://technori.com" },
+];
+
+/**
  * Service panels: photo on top; the panel's brand color (violet = both of
  * us, red = design, yellow = engineering) carried by the text band below.
  * Photos are code-owned and keyed by title, like the founder videos.
@@ -360,6 +385,44 @@ export default async function Home() {
               Email {content.contactEmail}
             </a>
           )}
+        </div>
+      </section>
+
+      {/* Paper field: companies we've built with */}
+      <section aria-labelledby="companies-heading" className="bg-paper">
+        <div className="mx-auto w-full max-w-6xl px-6 pt-20 md:pt-24">
+          <h2
+            id="companies-heading"
+            className="font-display text-2xl font-bold md:text-3xl"
+          >
+            Where we&apos;ve built
+          </h2>
+        </div>
+        <div className="logo-marquee mt-10 overflow-hidden pb-8">
+          <ul className="logo-track">
+            {[0, 1].map((copy) =>
+              companies.map((c) => (
+                <li
+                  key={`${copy}-${c.name}`}
+                  aria-hidden={copy === 1 ? true : undefined}
+                  className="w-40 shrink-0 px-4 md:w-52 md:px-6"
+                >
+                  <a
+                    href={c.url}
+                    tabIndex={copy === 1 ? -1 : undefined}
+                    className="logo-link block text-ink/70 transition-colors hover:text-violet focus-visible:text-violet"
+                  >
+                    <span
+                      role="img"
+                      aria-label={c.name}
+                      className="logo-mark block aspect-[432/218] w-full"
+                      style={{ "--logo": `url(/logos/${c.logo}.svg)` } as React.CSSProperties}
+                    />
+                  </a>
+                </li>
+              ))
+            )}
+          </ul>
         </div>
       </section>
 

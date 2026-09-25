@@ -84,6 +84,55 @@
   mask-image: linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
 }
 
+/* Company logos run as one continuously scrolling row. The list is rendered
+   twice and the track moves by exactly half its width, so the loop is seamless.
+   Pauses on hover/focus; with reduced motion it becomes a static wrapped row. */
+.logo-marquee {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+
+.logo-track {
+  display: flex;
+  width: max-content;
+  animation: logo-scroll 60s linear infinite;
+}
+
+.logo-marquee:hover .logo-track,
+.logo-marquee:focus-within .logo-track {
+  animation-play-state: paused;
+}
+
+@keyframes logo-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .logo-track {
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: none;
+  }
+  .logo-track [aria-hidden="true"] {
+    display: none;
+  }
+}
+
+/* Company logos: single-colour SVGs used as masks, so they're painted with
+   the link's current colour (ink at rest, violet on hover/focus). */
+.logo-mark {
+  background-color: currentColor;
+  -webkit-mask: var(--logo) center / contain no-repeat;
+  mask: var(--logo) center / contain no-repeat;
+}
+
 /* Hero entrance animation, currently unused (removed from the hero on
    2026-09-24); add `rise rise-N` back to the hero elements to restore. */
 @keyframes rise {
@@ -127,11 +176,11 @@
  */
 .blocks-fade {
   -webkit-mask-image:
-    linear-gradient(to left, transparent 0, #000 22%),
+    linear-gradient(to left, transparent 0, #000 8%),
     linear-gradient(to bottom, transparent 0, #000 12%, #000 78%, transparent 100%);
   -webkit-mask-composite: source-in;
   mask-image:
-    linear-gradient(to left, transparent 0, #000 22%),
+    linear-gradient(to left, transparent 0, #000 8%),
     linear-gradient(to bottom, transparent 0, #000 12%, #000 78%, transparent 100%);
   mask-composite: intersect;
 }
