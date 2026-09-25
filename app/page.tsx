@@ -222,12 +222,28 @@ export default async function Home() {
           text (object-position keeps the horizon row fixed), overhanging by
           42.7% of its height, i.e. 32% of its width.
         */}
-        <LoopVideo
-          src="/video/blocks.mp4"
-          poster="/video/blocks.jpg"
-          className="blocks-fade absolute right-[-1.5vw] bottom-0 z-10 hidden aspect-video w-[71vw] max-w-[1024px] translate-y-[42.7%] -scale-x-100 object-cover md:block"
-          style={{ objectPosition: "50% 57.3%" }}
-        />
+        <div className="absolute right-[-1.5vw] bottom-0 z-10 hidden aspect-video w-[71vw] max-w-[1024px] translate-y-[42.7%] md:block">
+          <LoopVideo
+            src="/video/blocks.mp4"
+            poster="/video/blocks.jpg"
+            className="blocks-fade absolute inset-0 h-full w-full -scale-x-100 object-cover"
+          />
+          {/*
+            Easter egg: a hotspot on the wedge block at the bottom right, which
+            sits still for nearly the whole film (88.8% across, 76.7% down, in
+            the mirrored frame). Hover or focus reveals the link.
+          */}
+          <a
+            href="/work/building-blocks/"
+            aria-label="See how we made this film"
+            className="egg absolute left-[88.8%] top-[76.7%] z-20 -translate-x-1/2 -translate-y-1/2"
+          >
+            <span aria-hidden className="egg-dot" />
+            <span aria-hidden className="egg-tip font-display">
+              See how we made this →
+            </span>
+          </a>
+        </div>
         <LoopVideo
           src="/video/blocks.mp4"
           poster="/video/blocks.jpg"
@@ -241,7 +257,15 @@ export default async function Home() {
         aria-labelledby="founders-heading"
         className="room relative isolate overflow-hidden bg-violet text-paper"
       >
-        <div className="mx-auto w-full max-w-7xl px-6 pt-[calc(32vw+2.5rem)] pb-20 md:pt-[24vw] lg:pt-[23vw] md:pb-28">
+        <div className="mx-auto w-full max-w-7xl px-6 pt-[calc(32vw+1rem)] pb-20 md:pt-[24vw] lg:pt-[23vw] md:pb-28">
+          {/* Phones: the film's wedge block is cropped out, so the easter-egg
+              link sits under the film as the section's first line. */}
+          <a
+            href="/work/building-blocks/"
+            className="mb-8 inline-block font-display text-sm font-bold text-paper/90 underline decoration-1 underline-offset-4 md:hidden"
+          >
+            * See how we made this →
+          </a>
           <div
             className="@container grid items-start gap-x-10 gap-y-10 md:grid-cols-[1fr_1.15fr_1fr]"
             style={{ "--floor-y": floorLineY(content.founders[0]) } as React.CSSProperties}

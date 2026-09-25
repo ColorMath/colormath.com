@@ -27,6 +27,7 @@ export default defineConfig({
                   .schemaType("landingPage")
                   .documentId("landingPage")
               ),
+            S.documentTypeListItem("caseStudy").title("Case Studies"),
           ]),
     }),
     visionTool(),
