@@ -17,10 +17,20 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!study) return {};
   return {
     title: `${study.title} · Color/Math`,
-    description: study.dek,
-    openGraph: { title: `${study.title} · Color/Math`, description: study.dek, images: [{ url: "/og.jpg", width: 1200, height: 630 }] },
+    description: plain(study.dek),
+    openGraph: { title: `${study.title} · Color/Math`, description: plain(study.dek), images: [{ url: "/og.jpg", width: 1200, height: 630 }] },
   };
 }
+
+/** Renders *word* as italics in short plain-text fields like the summary. */
+function Emphasis({ text }: { text: string }) {
+  return text.split(/(\*[^*]+\*)/).map((part, i) =>
+    part.startsWith("*") && part.endsWith("*") ? <em key={i}>{part.slice(1, -1)}</em> : part
+  );
+}
+
+/** The summary without its *emphasis* markers, for metadata. */
+const plain = (text?: string) => text?.replace(/\*/g, "");
 
 const body: PortableTextComponents = {
   block: {
@@ -71,7 +81,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
             <h1 className="mt-2 max-w-[20ch] font-display text-[clamp(2.5rem,5.5vw,4.25rem)] font-bold leading-[1.06]">
               {study.title}
             </h1>
-            {study.dek && <p className="mt-6 max-w-[38rem] text-lg leading-relaxed md:text-xl">{study.dek}</p>}
+            {study.dek && <p className="mt-6 max-w-[38rem] text-lg leading-relaxed md:text-xl"><Emphasis text={study.dek} /></p>}
           </div>
         </section>
 
