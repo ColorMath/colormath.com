@@ -3,7 +3,8 @@ import type { PortableTextBlock } from "@portabletext/react";
 import { client } from "./client";
 
 export type Credit = { role: string; name: string; url?: string };
-export type Photo = { src: string; alt: string };
+/** full = whole row; wide = two-thirds of a row; tall = one third (desktop). */
+export type Photo = { src: string; alt: string; layout?: "full" | "wide" | "tall" };
 export type CaseStudy = {
   title: string;
   slug: string;
@@ -50,16 +51,16 @@ export const fallbackCaseStudies: CaseStudy[] = [
       ], [{ _type: "link", _key: "monica", href: "https://www.linkedin.com/in/monicabrie/" }]),
     ] as PortableTextBlock[],
     shots: [
-      { src: "/case-studies/building-blocks/shot-01-blocks.webp", alt: "Two hands rise through holes in a violet table to build a block tower against the red wall." },
-      { src: "/case-studies/building-blocks/shot-02-pencils.webp", alt: "Hands hold a pencil up over a yellow notebook, with loose pencils on the violet table." },
-      { src: "/case-studies/building-blocks/shot-03-balls.webp", alt: "Colourful rubber balls scattered across the violet table." },
-      { src: "/case-studies/building-blocks/shot-04-beakers.webp", alt: "Hands pour coloured liquid between glass test tubes standing on the violet table." },
-      { src: "/case-studies/building-blocks/shot-05-spaghetti.webp", alt: "A plate of spaghetti with a red splat on a yellow table, a blue fork beside it." },
-      { src: "/case-studies/building-blocks/shot-06-balloon-dog.webp", alt: "A red balloon dog on a yellow backdrop." },
-      { src: "/case-studies/building-blocks/shot-07-blocks-flatlay.webp", alt: "Wooden blocks with coloured windows scattered flat on red." },
-      { src: "/case-studies/building-blocks/shot-08-block-tower.webp", alt: "A tall tower of wooden blocks topped with a triangle, on red." },
-      { src: "/case-studies/building-blocks/shot-09-pineapple.webp", alt: "A pineapple with googly eyes and a banana smile, on red." },
-      { src: "/case-studies/building-blocks/shot-10-ball-stack.webp", alt: "A small pile of patterned balls on a red ring, against red." },
+      { src: "/case-studies/building-blocks/shot-01-blocks.webp", alt: "Two hands rise through holes in a violet table to build a block tower against the red wall.", layout: "full" },
+      { src: "/case-studies/building-blocks/shot-04-beakers.webp", alt: "Hands pour coloured liquid between glass test tubes standing on the violet table.", layout: "wide" },
+      { src: "/case-studies/building-blocks/shot-06-balloon-dog.webp", alt: "A red balloon dog on a yellow backdrop.", layout: "tall" },
+      { src: "/case-studies/building-blocks/shot-09-pineapple.webp", alt: "A pineapple with googly eyes and a banana smile, on red.", layout: "tall" },
+      { src: "/case-studies/building-blocks/shot-02-pencils.webp", alt: "Hands hold a pencil up over a yellow notebook, with loose pencils on the violet table.", layout: "wide" },
+      { src: "/case-studies/building-blocks/shot-03-balls.webp", alt: "Colourful rubber balls scattered across the violet table.", layout: "wide" },
+      { src: "/case-studies/building-blocks/shot-08-block-tower.webp", alt: "A tall tower of wooden blocks topped with a triangle, on red.", layout: "tall" },
+      { src: "/case-studies/building-blocks/shot-10-ball-stack.webp", alt: "A small pile of patterned balls on a red ring, against red.", layout: "tall" },
+      { src: "/case-studies/building-blocks/shot-07-blocks-flatlay.webp", alt: "Wooden blocks with coloured windows scattered flat on red.", layout: "wide" },
+      { src: "/case-studies/building-blocks/shot-05-spaghetti.webp", alt: "A plate of spaghetti with a red splat on a yellow table, a blue fork beside it.", layout: "full" },
     ],
     gallery: [
       { src: "/case-studies/building-blocks/01-studio.webp", alt: "The studio before the shoot: softbox lights and a camera on a tripod, with the violet tabletop on sawhorses in front of the red backdrop." },
@@ -87,7 +88,7 @@ export const fallbackCaseStudies: CaseStudy[] = [
 
 const query = groq`*[_type == "caseStudy" && defined(slug.current)]{
   title, "slug": slug.current, dek, videoUrl, posterUrl, videoCaption, body,
-  shots[]{ src, alt }, gallery[]{ src, alt }, credits[]{ role, name, url }
+  shots[]{ src, alt, layout }, gallery[]{ src, alt }, credits[]{ role, name, url }
 }`;
 
 /** Sanity's case studies, or the fallback copy when Sanity is unavailable. */
