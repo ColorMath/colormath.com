@@ -30,7 +30,7 @@ export const fallbackCaseStudies: CaseStudy[] = [
   {
     title: "Building block towers...and the Color/Math Brand",
     slug: "building-blocks",
-    dek: "The film at the top of our homepage was made by hand: a hand-built set, planned shots, and a photographer we hired to shoot it.",
+    dek: "A behind-the-scenes look at the hand-made Color/Math brand (emphasis on the hands).",
     videoUrl: "/case-studies/building-blocks/under-the-table.mp4",
     posterUrl: "/case-studies/building-blocks/under-the-table.jpg",
     videoCaption: "Behind the scenes, under the table.",
