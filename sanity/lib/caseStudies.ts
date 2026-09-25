@@ -12,6 +12,7 @@ export type CaseStudy = {
   posterUrl?: string;
   videoCaption?: string;
   body: PortableTextBlock[];
+  shots: Photo[];
   gallery: Photo[];
   credits: Credit[];
 };
@@ -48,6 +49,18 @@ export const fallbackCaseStudies: CaseStudy[] = [
         span(" to shoot the stills and video you see across this site."),
       ], [{ _type: "link", _key: "monica", href: "https://www.linkedin.com/in/monicabrie/" }]),
     ] as PortableTextBlock[],
+    shots: [
+      { src: "/case-studies/building-blocks/shot-01-blocks.webp", alt: "Two hands rise through holes in a violet table to build a block tower against the red wall." },
+      { src: "/case-studies/building-blocks/shot-02-pencils.webp", alt: "Hands hold a pencil up over a yellow notebook, with loose pencils on the violet table." },
+      { src: "/case-studies/building-blocks/shot-03-balls.webp", alt: "Colourful rubber balls scattered across the violet table." },
+      { src: "/case-studies/building-blocks/shot-04-beakers.webp", alt: "Hands pour coloured liquid between glass test tubes standing on the violet table." },
+      { src: "/case-studies/building-blocks/shot-05-spaghetti.webp", alt: "A plate of spaghetti with a red splat on a yellow table, a blue fork beside it." },
+      { src: "/case-studies/building-blocks/shot-06-balloon-dog.webp", alt: "A red balloon dog on a yellow backdrop." },
+      { src: "/case-studies/building-blocks/shot-07-blocks-flatlay.webp", alt: "Wooden blocks with coloured windows scattered flat on red." },
+      { src: "/case-studies/building-blocks/shot-08-block-tower.webp", alt: "A tall tower of wooden blocks topped with a triangle, on red." },
+      { src: "/case-studies/building-blocks/shot-09-pineapple.webp", alt: "A pineapple with googly eyes and a banana smile, on red." },
+      { src: "/case-studies/building-blocks/shot-10-ball-stack.webp", alt: "A small pile of patterned balls on a red ring, against red." },
+    ],
     gallery: [
       { src: "/case-studies/building-blocks/01-studio.webp", alt: "The studio before the shoot: softbox lights and a camera on a tripod, with the violet tabletop on sawhorses in front of the red backdrop." },
       { src: "/case-studies/building-blocks/02-tabletop.webp", alt: "Close on the violet tabletop and its two hand holes, set with a pineapple and bananas for a test shot, with someone crouched underneath." },
@@ -74,7 +87,7 @@ export const fallbackCaseStudies: CaseStudy[] = [
 
 const query = groq`*[_type == "caseStudy" && defined(slug.current)]{
   title, "slug": slug.current, dek, videoUrl, posterUrl, videoCaption, body,
-  gallery[]{ src, alt }, credits[]{ role, name, url }
+  shots[]{ src, alt }, gallery[]{ src, alt }, credits[]{ role, name, url }
 }`;
 
 /** Sanity's case studies, or the fallback copy when Sanity is unavailable. */
@@ -82,7 +95,7 @@ export async function getCaseStudies(): Promise<CaseStudy[]> {
   if (!client) return fallbackCaseStudies;
   try {
     const docs: CaseStudy[] = await client.fetch(query);
-    return docs.length ? docs.map((d) => ({ ...d, body: d.body ?? [], gallery: d.gallery ?? [], credits: d.credits ?? [] })) : fallbackCaseStudies;
+    return docs.length ? docs.map((d) => ({ ...d, body: d.body ?? [], shots: d.shots ?? [], gallery: d.gallery ?? [], credits: d.credits ?? [] })) : fallbackCaseStudies;
   } catch (error) {
     console.warn("Sanity case study fetch failed; using fallback.", error);
     return fallbackCaseStudies;

@@ -153,15 +153,17 @@
 }
 
 /*
- * Keyboard focus (WCAG 2.4.7 / 2.4.11): a solid 3px ring everywhere, ink on the
+ * Keyboard focus (WCAG 2.4.7 / 2.4.11): a solid 3px ring on everything a
+ * visitor can tab to (not programmatic focus targets like <main> or the contact
+ * thank-you, which use tabindex=-1), ink on the
  * light fields and paper on the red and violet ones, instead of the browser's
  * thin default that disappears on saturated colour.
  */
-:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+:where(a, button, input, textarea, select, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
   outline: 3px solid var(--color-ink);
   outline-offset: 3px;
 }
-:where(.bg-red, .bg-violet, .on-dark) :where(a, button, [tabindex]):focus-visible {
+:where(.bg-red, .bg-violet, .on-dark) :where(a, button, [tabindex]:not([tabindex="-1"])):focus-visible {
   outline-color: var(--color-paper);
 }
 

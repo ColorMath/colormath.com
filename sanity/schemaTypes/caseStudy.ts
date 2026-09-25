@@ -47,6 +47,22 @@ export const caseStudy = defineType({
       ],
     }),
     defineField({
+      name: "shots",
+      title: "Final shots",
+      description: "Finished photographs, shown above the behind-the-scenes gallery. Web copies live in public/case-studies/<slug>/",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "object",
+          fields: [
+            defineField({ name: "src", title: "Image path", type: "string" }),
+            defineField({ name: "alt", title: "Alt text", type: "string", validation: (r) => r.required() }),
+          ],
+          preview: { select: { title: "alt", subtitle: "src" } },
+        }),
+      ],
+    }),
+    defineField({
       name: "gallery",
       title: "Behind-the-scenes photos",
       description: "Web copies live in public/case-studies/<slug>/",
