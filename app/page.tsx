@@ -291,7 +291,7 @@ export default async function Home() {
               From md up, the heading sits just above the floor line and the
               body just below it; stacked, it's simply the first thing.
             */}
-            <div className="relative z-10 md:pt-[var(--floor-y)]">
+            <div className="relative z-20 md:pt-[var(--floor-y)]">
               <div className="md:relative">
                 <h2
                   id="founders-heading"
@@ -317,10 +317,12 @@ export default async function Home() {
             stacking context that holds the floor layer; without this, Safari
             paints that layer over the bios.
           */}
-          <div className="relative z-10 mt-14 grid gap-x-16 gap-y-14 md:mt-4 md:grid-cols-2">
+          <div className="relative z-10 mt-2 grid gap-x-16 gap-y-14 md:mt-4 md:grid-cols-2">
             {content.founders.map((founder: Founder, i: number) => (
-              <article key={founder.name}>
-                <FounderImage founder={founder} phone className="mb-6 md:hidden" />
+              <article key={founder.name} className="[&>*:not(:first-child)]:relative [&>*:not(:first-child)]:z-10">
+                {/* The phone copy carries 120/822 of violet padding above and below
+                    the subject; pull it into the surrounding space. */}
+                <FounderImage founder={founder} phone className="-mt-[14.6vw] -mb-[12vw] md:hidden" />
                 <h3 className="font-display text-3xl font-bold md:text-4xl">
                   {founder.name}
                 </h3>
