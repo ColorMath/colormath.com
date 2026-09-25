@@ -21,20 +21,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-/** Renders the artboard's bold-serif emphasis inside the hero body copy. */
-function HeroSubheading({ text }: { text: string }) {
-  const phrase = "helps teams design and build great products";
-  const at = text.indexOf(phrase);
-  if (at === -1) return text;
-  return (
-    <>
-      {text.slice(0, at)}
-      <strong className="font-display font-bold">{phrase}</strong>
-      {text.slice(at + phrase.length)}
-    </>
-  );
-}
-
 const roleChip = [
   "bg-red text-paper",
   "bg-yellow text-ink",
@@ -196,7 +182,7 @@ export default async function Home() {
             {content.heroHeading}
           </h1>
           <p className="mt-6 max-w-[38rem] text-base leading-relaxed md:text-lg">
-            <HeroSubheading text={content.heroSubheading} />
+            {content.heroSubheading}
           </p>
           {content.contactEmail && (
             <div className="mt-10">

@@ -14,7 +14,7 @@ export const caseStudy = defineType({
       options: { source: "title" },
       validation: (r) => r.required(),
     }),
-    defineField({ name: "dek", title: "Summary", description: "One line under the title", type: "text", rows: 2 }),
+    defineField({ name: "dek", title: "Summary", description: "One line under the title. Wrap a word in *asterisks* for italics.", type: "text", rows: 2 }),
     defineField({
       name: "videoUrl",
       title: "Video URL",
