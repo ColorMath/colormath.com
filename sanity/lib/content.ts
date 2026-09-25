@@ -15,7 +15,7 @@ export type Founder = {
    */
   video?: {
     webm: string;
-    /** HEVC-alpha copy for WebKit (Safari, all iOS browsers). */
+    /** HEVC-alpha copy for desktop Safari (not iOS). */
     mov?: string;
     /** Phone layout: opaque MP4 on the section violet (#6318fb), padded. */
     solid?: string;
@@ -81,6 +81,7 @@ export const fallbackContent: LandingContent = {
       photoUrl: "/img/jessica.png",
       video: {
         webm: "/video/chair-clip-jess.webm",
+        mov: "/video/chair-clip-jess.mov",
         solid: "/video/chair-clip-jess-solid.mp4",
         solidAspect: "822 / 1708", // 120px violet above and below
         still: "/video/chair-clip-jess-still.webp",
@@ -96,6 +97,7 @@ export const fallbackContent: LandingContent = {
       photoUrl: "/img/craig.png",
       video: {
         webm: "/video/chair-clip-craig.webm",
+        mov: "/video/chair-clip-craig.mov",
         solid: "/video/chair-clip-craig-solid.mp4",
         solidAspect: "822 / 1708",
         still: "/video/chair-clip-craig-still.webp",
