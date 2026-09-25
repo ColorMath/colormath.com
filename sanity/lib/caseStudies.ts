@@ -67,7 +67,7 @@ export const fallbackCaseStudies: CaseStudy[] = [
     credits: [
       { role: "Photography and video", name: "Monica Thornton", url: "https://www.linkedin.com/in/monicabrie/" },
       { role: "Set pieces", name: "Craig M. Booth", url: "https://craigmbooth.com" },
-      { role: "Shot planning", name: "Jessica Tenuta", url: "https://jessicatenuta.com" },
+      { role: "Creative direction", name: "Jessica Tenuta", url: "https://jessicatenuta.com" },
     ],
   },
 ];
