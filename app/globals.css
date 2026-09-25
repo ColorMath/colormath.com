@@ -203,6 +203,52 @@
   }
 }
 
+/* Hero easter egg: a soft glowing marker on a block in the film; hover or
+   keyboard focus reveals a small ink tag with the link text. */
+.egg {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+}
+.egg-dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  background: var(--color-paper);
+  box-shadow: 0 0 0 0 rgb(253 252 250 / 0.7);
+  animation: egg-pulse 2.4s ease-out infinite;
+}
+.egg-tip {
+  position: absolute;
+  right: 50%;
+  bottom: calc(100% + 0.25rem);
+  white-space: nowrap;
+  padding: 0.35rem 0.7rem;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-size: 0.875rem;
+  font-weight: 700;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  pointer-events: none;
+}
+.egg:hover .egg-tip,
+.egg:focus-visible .egg-tip {
+  opacity: 1;
+  transform: none;
+}
+@keyframes egg-pulse {
+  0% { box-shadow: 0 0 0 0 rgb(253 252 250 / 0.7); }
+  70%, 100% { box-shadow: 0 0 0 0.9rem rgb(253 252 250 / 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .egg-dot { animation: none; }
+  .egg-tip { transition: none; }
+}
+
 /* Hero entrance animation, currently unused (removed from the hero on
    2026-09-24); add `rise rise-N` back to the hero elements to restore. */
 @keyframes rise {
