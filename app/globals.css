@@ -183,6 +183,26 @@
   outline-color: var(--color-yellow);
 }
 
+/*
+ * Hero field (md up): the plate darkens toward magenta on the left, but the
+ * Blocks film's wall is a flat bright red, so their meeting read as a hard
+ * seam. Lift the plate to the film's wall red (#b4050d) by the film's left
+ * edge, easing in over the 360px before it. The film sits flush right at
+ * min(71vw, 1024px) wide, 1.5vw past the edge, so its left edge is --film-left.
+ */
+@media (min-width: 48rem) {
+  .hero-field {
+    --film-left: calc(101.5vw - min(71vw, 1024px));
+    background-image:
+      linear-gradient(
+        to right,
+        transparent calc(var(--film-left) - 360px),
+        #b4050d var(--film-left)
+      ),
+      url("/img/hero-red.png");
+  }
+}
+
 /* Hero entrance animation, currently unused (removed from the hero on
    2026-09-24); add `rise rise-N` back to the hero elements to restore. */
 @keyframes rise {

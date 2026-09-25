@@ -183,7 +183,7 @@ export default async function Home() {
         </header>
 
       <main id="main" tabIndex={-1} className="outline-none">
-      <div className="relative overflow-x-clip bg-red bg-[url('/img/hero-red.png')] bg-cover bg-center pt-[4.25rem] text-paper">
+      <div className="hero-field relative overflow-x-clip bg-red bg-[url('/img/hero-red.png')] bg-cover bg-center pt-[4.25rem] text-paper">
 
         <section
           id="top"
