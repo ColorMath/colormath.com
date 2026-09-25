@@ -130,11 +130,33 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
               <h2 id="shots-heading" className="font-display text-2xl font-bold md:text-3xl">
                 The shots
               </h2>
-              <ul className="mt-10 columns-1 gap-5 sm:columns-2 lg:columns-3">
+              {/* Desktop rows: a full-width shot, or a wide (3:2) beside a tall
+                  (cropped to 3:4) so the pair lines up at the same height. */}
+              <ul className="mt-10 grid gap-5 md:grid-cols-3">
                 {study.shots.map((photo) => (
-                  <li key={photo.src} className="mb-5 break-inside-avoid">
+                  <li
+                    key={photo.src}
+                    className={
+                      photo.layout === "full"
+                        ? "md:col-span-3"
+                        : photo.layout === "wide"
+                          ? "md:col-span-2"
+                          : ""
+                    }
+                  >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={photo.src} alt={photo.alt} loading="lazy" className="block w-full" />
+                    <img
+                      src={photo.src}
+                      alt={photo.alt}
+                      loading="lazy"
+                      className={`block w-full ${
+                        photo.layout === "wide"
+                          ? "md:aspect-[3/2] md:h-full md:object-cover"
+                          : photo.layout === "tall"
+                            ? "md:aspect-[3/4] md:h-full md:object-cover"
+                            : ""
+                      }`}
+                    />
                   </li>
                 ))}
               </ul>

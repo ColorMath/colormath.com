@@ -57,8 +57,15 @@ export const caseStudy = defineType({
           fields: [
             defineField({ name: "src", title: "Image path", type: "string" }),
             defineField({ name: "alt", title: "Alt text", type: "string", validation: (r) => r.required() }),
+            defineField({
+              name: "layout",
+              title: "Layout",
+              description: "Desktop size: full row, two-thirds (pair with a tall), or one third",
+              type: "string",
+              options: { list: ["full", "wide", "tall"], layout: "radio" },
+            }),
           ],
-          preview: { select: { title: "alt", subtitle: "src" } },
+          preview: { select: { title: "alt", subtitle: "layout" } },
         }),
       ],
     }),
