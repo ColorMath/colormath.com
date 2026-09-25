@@ -28,7 +28,7 @@ const block = (children: ReturnType<typeof span>[], markDefs: object[] = []) => 
 /** Same copy as the Sanity document, so the page builds without Sanity. */
 export const fallbackCaseStudies: CaseStudy[] = [
   {
-    title: "Building block towers...and the Color/Math Brand",
+    title: "Building the Color/Math Brand",
     slug: "building-blocks",
     dek: "A behind-the-scenes look at the hand-made Color/Math brand (emphasis on the hands).",
     videoUrl: "/case-studies/building-blocks/under-the-table.mp4",
