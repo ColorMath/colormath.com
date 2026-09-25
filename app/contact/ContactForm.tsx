@@ -1,61 +1,52 @@
 "use client";
 
-const FOUNDERS = "jessica@jessicatenuta.com,hello@craigmbooth.com";
+import { useEffect } from "react";
 
-/** Opens the visitor's email app with their message addressed to both founders. */
-function mailtoFallback(data: Record<string, string>) {
-  const subject = `Website inquiry from ${data.name}`;
-  const body = [data.message, "", data.name, data.company].filter(Boolean).join("\n");
-  window.location.href = `mailto:${FOUNDERS}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+/** The Tally form behind /contact (notifications go to both founders; set in Tally). */
+const TALLY_FORM_ID = "LZlg11";
+
+declare global {
+  interface Window {
+    Tally?: { loadEmbeds: () => void };
+  }
 }
 
-const field =
-  "mt-2 w-full border-2 border-ink bg-paper px-4 py-3 text-lg text-ink outline-none focus-visible:ring-4 focus-visible:ring-violet";
-const label = "font-display text-lg font-bold";
-
+/**
+ * Tally's standard embed: transparent so the page's yellow shows through, no
+ * repeated title (the page has its own heading), and dynamic height so it
+ * sizes itself to the form. The noscript link keeps it usable without JS.
+ */
 export function ContactForm() {
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    // Opens the visitor's email app; to be replaced by the Tally embed.
-    mailtoFallback(Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>);
-  }
+  useEffect(() => {
+    const src = "https://tally.so/widgets/embed.js";
+    if (window.Tally) {
+      window.Tally.loadEmbeds();
+      return;
+    }
+    if (!document.querySelector(`script[src="${src}"]`)) {
+      const script = document.createElement("script");
+      script.src = src;
+      script.async = true;
+      script.onload = () => window.Tally?.loadEmbeds();
+      document.body.appendChild(script);
+    }
+  }, []);
 
   return (
-    <form onSubmit={onSubmit} className="grid max-w-2xl gap-6">
-      <div className="grid gap-6 md:grid-cols-2">
-        <label className={label}>
-          Name
-          <input name="name" required autoComplete="name" className={field} />
-        </label>
-        <label className={label}>
-          Email
-          <input name="email" type="email" required autoComplete="email" className={field} />
-        </label>
-      </div>
-      <label className={label}>
-        Company <span className="font-body text-base font-normal">(optional)</span>
-        <input name="company" autoComplete="organization" className={field} />
-      </label>
-      <label className={label}>
-        What are you building?
-        <textarea name="message" required rows={6} className={field} />
-      </label>
-      {/* Honeypot: hidden from people and assistive tech; bots fill it. */}
-      <input
-        name="website"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden
-        className="absolute -left-[9999px] h-px w-px opacity-0"
+    <div className="max-w-2xl">
+      <iframe
+        data-tally-src={`https://tally.so/embed/${TALLY_FORM_ID}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1`}
+        loading="lazy"
+        width="100%"
+        height="520"
+        title="Talk to Color/Math"
+        className="block w-full border-0"
       />
-      <div>
-        <button
-          type="submit"
-          className="bg-ink px-7 py-3.5 font-display text-lg font-bold text-paper transition-colors hover:bg-coal disabled:opacity-60"
-        >
-          Send
-        </button>
-      </div>
-    </form>
+      <noscript>
+        <a href={`https://tally.so/r/${TALLY_FORM_ID}`} className="font-bold underline">
+          Open the contact form
+        </a>
+      </noscript>
+    </div>
   );
 }
