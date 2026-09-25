@@ -262,7 +262,7 @@ export default async function Home() {
               link sits under the film as the section's first line. */}
           <a
             href="/work/building-blocks/"
-            className="mb-8 inline-block font-display text-sm font-bold text-paper/90 underline decoration-1 underline-offset-4 md:hidden"
+            className="mb-14 inline-block font-display text-sm font-bold text-paper/90 underline decoration-1 underline-offset-4 md:hidden"
           >
             * See how we made this →
           </a>
