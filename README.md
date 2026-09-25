@@ -31,13 +31,13 @@ One-time repo setup:
 
 ### Rebuild when content is published
 
-GitHub Pages doesn't watch Sanity, so publishing content requires a rebuild. Either re-run the workflow (Actions → Deploy to GitHub Pages → Run workflow), or wire it up automatically:
-
-1. Create a GitHub fine-grained PAT with `contents: read/write` on this repo.
-2. In Sanity → API → Webhooks, add a webhook that POSTs to
-   `https://api.github.com/repos/<owner>/colormath.com/dispatches` with header
-   `Authorization: Bearer <PAT>` and body `{"event_type": "sanity-publish"}`,
-   filtered to `_type == "landingPage"`.
+GitHub Pages doesn't watch Sanity, so the site is rebuilt for you: every 10
+minutes `.github/workflows/sanity-watch.yml` asks Sanity when content was last
+published and, if that's newer than the last successful deploy, runs
+**Deploy to GitHub Pages**. It uses the public dataset and the workflow's own
+token, so no secrets are needed. A publish shows up on the site within about
+10–15 minutes. To rebuild immediately, run the Deploy workflow by hand
+(Actions → Deploy to GitHub Pages → Run workflow).
 
 ## Notes
 
