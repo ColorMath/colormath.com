@@ -181,27 +181,28 @@ export default async function Home() {
         </section>
 
         {/*
-          Blocks film: its red-wall/violet-table horizon sits at 55.9% of the
+          Blocks film: its red-wall/violet-table horizon sits at 57.3% of the
           frame, pinned to the hero's bottom edge so the table runs on into the
-          violet section. Desktop: 16:9 at 71vw, nudged just past the right
+          violet section. Desktop: 16:9 at 71vw (capped at 1024px so it can't outgrow
+          the max-width hero copy on wide windows), nudged just past the right
           edge (clipped by the wrapper; the outermost block stays in frame),
-          dropped by the table's share (44.1%) of its own height. Both copies
+          dropped by the table's share (42.7%) of its own height. Both copies
           are mirrored (-scale-x-100) so the hands enter from the left.
           Mobile: 4:3 crop under the
           text (object-position keeps the horizon row fixed), overhanging by
-          44.1% of its height, i.e. 33.1% of its width.
+          42.7% of its height, i.e. 32% of its width.
         */}
         <LoopVideo
           src="/video/blocks.mp4"
           poster="/video/blocks.jpg"
-          className="blocks-fade absolute right-[-1.5vw] bottom-0 z-10 hidden aspect-video w-[71vw] translate-y-[44.1%] -scale-x-100 object-cover md:block"
-          style={{ objectPosition: "50% 55.9%" }}
+          className="blocks-fade absolute right-[-1.5vw] bottom-0 z-10 hidden aspect-video w-[71vw] max-w-[1024px] translate-y-[42.7%] -scale-x-100 object-cover md:block"
+          style={{ objectPosition: "50% 57.3%" }}
         />
         <LoopVideo
           src="/video/blocks.mp4"
           poster="/video/blocks.jpg"
-          className="blocks-fade-mobile relative z-10 -mb-[33.1%] block aspect-[4/3] w-full -scale-x-100 object-cover md:hidden"
-          style={{ objectPosition: "50% 55.9%" }}
+          className="blocks-fade-mobile relative z-10 -mb-[32%] block aspect-[4/3] w-full -scale-x-100 object-cover md:hidden"
+          style={{ objectPosition: "50% 57.3%" }}
         />
       </div>
 
@@ -210,7 +211,7 @@ export default async function Home() {
         aria-labelledby="founders-heading"
         className="room relative isolate overflow-hidden bg-violet text-paper"
       >
-        <div className="mx-auto w-full max-w-7xl px-6 pt-[calc(33.1vw+2.5rem)] pb-20 md:pt-[24vw] lg:pt-[23vw] md:pb-28">
+        <div className="mx-auto w-full max-w-7xl px-6 pt-[calc(32vw+2.5rem)] pb-20 md:pt-[24vw] lg:pt-[23vw] md:pb-28">
           <div
             className="@container grid items-start gap-x-10 gap-y-10 md:grid-cols-[1fr_1.15fr_1fr]"
             style={{ "--floor-y": floorLineY(content.founders[0]) } as React.CSSProperties}
