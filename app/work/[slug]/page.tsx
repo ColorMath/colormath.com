@@ -124,6 +124,24 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           </div>
         </section>
 
+        {study.shots.length > 0 && (
+          <section aria-labelledby="shots-heading" className="bg-red text-paper on-dark">
+            <div className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
+              <h2 id="shots-heading" className="font-display text-2xl font-bold md:text-3xl">
+                The shots
+              </h2>
+              <ul className="mt-10 columns-1 gap-5 sm:columns-2 lg:columns-3">
+                {study.shots.map((photo) => (
+                  <li key={photo.src} className="mb-5 break-inside-avoid">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={photo.src} alt={photo.alt} loading="lazy" className="block w-full" />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )}
+
         {study.gallery.length > 0 && (
           <section aria-labelledby="gallery-heading" className="bg-violet text-paper on-dark">
             <div className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
