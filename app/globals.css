@@ -95,7 +95,7 @@
 .logo-track {
   display: flex;
   width: max-content;
-  animation: logo-scroll 120s linear infinite;
+  animation: logo-scroll 200s linear infinite;
 }
 
 .logo-marquee:hover .logo-track,

@@ -14,16 +14,24 @@ export function LogoMarquee({ companies }: { companies: Company[] }) {
   const [paused, setPaused] = useState(false);
   return (
     <>
-      <button
-        type="button"
-        aria-pressed={paused}
-        onClick={() => setPaused((p) => !p)}
-        className="logo-toggle font-display text-base font-bold underline decoration-2 underline-offset-4 hover:decoration-violet"
-      >
-        {paused ? "Play logos" : "Pause logos"}
-      </button>
+      <div className="mx-auto flex w-full max-w-6xl items-baseline justify-between gap-6 px-6 pt-20 md:pt-24">
+        <h2
+          id="companies-heading"
+          className="font-display text-2xl font-bold md:text-3xl"
+        >
+          Where we&apos;ve built
+        </h2>
+        <button
+          type="button"
+          aria-pressed={paused}
+          onClick={() => setPaused((p) => !p)}
+          className="shrink-0 text-sm underline decoration-1 underline-offset-4 opacity-80 hover:decoration-violet hover:opacity-100"
+        >
+          {paused ? "Play logos" : "Pause logos"}
+        </button>
+      </div>
       <div
-        className="logo-marquee mt-6 overflow-hidden py-3 pb-10"
+        className="logo-marquee mt-8 overflow-hidden py-3 pb-10"
         data-paused={paused || undefined}
       >
         <ul className="logo-track">

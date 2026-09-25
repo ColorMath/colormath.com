@@ -128,7 +128,7 @@ const companies = [
   { name: "Packback", logo: "packback", url: "https://packback.co" },
   { name: "Narrative Science", logo: "narrativescience", url: "https://en.wikipedia.org/wiki/Narrative_Science" },
   { name: "Talas", logo: "talas", url: "https://talas.co" },
-  { name: "Factor 75", logo: "factor75", url: "https://www.factor75.com" },
+  { name: "Factor", logo: "factor", url: "https://www.factor75.com" },
   { name: "Snapsheet", logo: "snapsheet", url: "https://www.snapsheetclaims.com" },
   { name: "Fooda", logo: "fooda", url: "https://www.fooda.com" },
   { name: "Lightbank", logo: "lightbank", url: "https://www.lightbank.com" },
@@ -366,17 +366,7 @@ export default async function Home() {
 
       {/* Paper field: companies we've built with */}
       <section aria-labelledby="companies-heading" className="bg-paper">
-        <div className="mx-auto w-full max-w-6xl px-6 pt-20 md:pt-24">
-          <h2
-            id="companies-heading"
-            className="font-display text-2xl font-bold md:text-3xl"
-          >
-            Where we&apos;ve built
-          </h2>
-        </div>
-        <div className="pt-4 [&>button]:mx-auto [&>button]:block [&>button]:w-full [&>button]:max-w-6xl [&>button]:px-6 [&>button]:text-left">
-          <LogoMarquee companies={companies} />
-        </div>
+        <LogoMarquee companies={companies} />
       </section>
 
       {/* Yellow field: contact */}
