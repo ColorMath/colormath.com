@@ -95,12 +95,31 @@
 .logo-track {
   display: flex;
   width: max-content;
-  animation: logo-scroll 60s linear infinite;
+  animation: logo-scroll 120s linear infinite;
 }
 
 .logo-marquee:hover .logo-track,
-.logo-marquee:focus-within .logo-track {
+.logo-marquee:focus-within .logo-track,
+.logo-marquee[data-paused] .logo-track {
   animation-play-state: paused;
+}
+
+/* Keyboard users: stop the motion and make the row natively scrollable, so the
+   browser brings each focused logo fully into view. */
+.logo-marquee:has(:focus-visible) {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+.logo-marquee:has(:focus-visible) .logo-track {
+  animation: none;
+}
+
+/* Keyboard users: a visible ring, and room above/below so it isn't clipped. */
+.logo-link:focus-visible {
+  outline: 3px solid var(--color-violet);
+  outline-offset: 4px;
 }
 
 @keyframes logo-scroll {
@@ -131,6 +150,37 @@
   background-color: currentColor;
   -webkit-mask: var(--logo) center / contain no-repeat;
   mask: var(--logo) center / contain no-repeat;
+}
+
+/*
+ * Keyboard focus (WCAG 2.4.7 / 2.4.11): a solid 3px ring everywhere, ink on the
+ * light fields and paper on the red and violet ones, instead of the browser's
+ * thin default that disappears on saturated colour.
+ */
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 3px;
+}
+:where(.bg-red, .bg-violet, .on-dark) :where(a, button, [tabindex]):focus-visible {
+  outline-color: var(--color-paper);
+}
+
+/* Skip link: first thing a keyboard user reaches; visible only on focus. */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 50;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-display);
+  font-weight: 700;
+  transition: top 0.15s ease;
+}
+.skip-link:focus-visible {
+  top: 1rem;
+  outline-color: var(--color-yellow);
 }
 
 /* Hero entrance animation, currently unused (removed from the hero on

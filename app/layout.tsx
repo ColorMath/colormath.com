@@ -29,7 +29,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${ptSerif.variable} ${fira.variable}`}>
-      <body className="bg-paper font-body text-ink antialiased">
+      <body className="relative bg-paper font-body text-ink antialiased">
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         {children}
       </body>
     </html>
