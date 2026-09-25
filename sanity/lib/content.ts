@@ -52,7 +52,7 @@ export const fallbackContent: LandingContent = {
   heroEyebrow: "It's faster than ever to build something.",
   heroHeading: "It's harder than ever to build something great.",
   heroSubheading:
-    "Color/Math is a multi-disciplinary design studio that helps teams design and build great products that achieve business outcomes in the age of AI.",
+    "Color/Math is a multi-disciplinary design studio that helps teams design and build great products and beautiful brands.",
   servicesHeading: "What we do",
   services: [
     {
