@@ -52,7 +52,8 @@ function alphaLooksRight(video: HTMLVideoElement): boolean {
  *   fades out over its padding, because iOS and Android colour-manage video
  *   differently (~10 levels apart) and no single baked colour matches both.
  * Reduced-motion visitors, engines that can play neither, and copies hidden
- * at this breakpoint keep the still and download nothing.
+ * at this breakpoint keep the still and download nothing. Everyone else only
+ * starts downloading once the still is within about a screen of the viewport.
  *
  * Fallback: if the video errors, doesn't start within START_TIMEOUT_MS, or
  * its first frame fails the corner-alpha check, the still comes back for good.
@@ -105,16 +106,31 @@ export function CutoutVideo({
       (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
     const webkit =
       iOS || (/AppleWebKit/.test(ua) && !/Chrome|Chromium|Edg|OPR|Firefox/.test(ua));
-    const probe = document.createElement("video");
-    if (solid && iOS) {
-      // iPhones can't render alpha video correctly; everyone else keeps it.
-      if (probe.canPlayType('video/mp4; codecs="avc1.640028"')) setSource(solid);
-    } else if (webkit) {
-      // Chromium also reports HEVC support but drops its alpha, hence the UA gate.
-      if (mov && probe.canPlayType('video/mp4; codecs="hvc1"')) setSource(mov);
-    } else if (probe.canPlayType('video/webm; codecs="vp9"')) {
-      setSource(webm);
-    }
+    // Don't download anything until the still is within about a screen of
+    // the viewport; most visitors see the hero long before the founders.
+    const choose = () => {
+      const probe = document.createElement("video");
+      if (solid && iOS) {
+        // iPhones can't render alpha video correctly; everyone else keeps it.
+        if (probe.canPlayType('video/mp4; codecs="avc1.640028"')) setSource(solid);
+      } else if (webkit) {
+        // Chromium also reports HEVC support but drops its alpha, hence the UA gate.
+        if (mov && probe.canPlayType('video/mp4; codecs="hvc1"')) setSource(mov);
+      } else if (probe.canPlayType('video/webm; codecs="vp9"')) {
+        setSource(webm);
+      }
+    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          io.disconnect();
+          choose();
+        }
+      },
+      { rootMargin: "100% 0px" }
+    );
+    io.observe(img);
+    return () => io.disconnect();
   }, [webm, mov, solid]);
 
   if (source && !failed) {
