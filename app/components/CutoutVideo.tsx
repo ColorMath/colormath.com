@@ -43,7 +43,8 @@ function alphaLooksRight(video: HTMLVideoElement): boolean {
  * then swaps in the video that engine renders cleanly, seeked to that same
  * frame so the handoff is invisible:
  * - Chromium and Firefox: VP9-alpha WebM.
- * - WebKit (Safari, and every iOS browser, Chrome included): HEVC-alpha MOV.
+ * - Desktop Safari: HEVC-alpha MOV written by AVAssetWriter (Apple's
+ *   encoder; an ffmpeg-made file mis-rendered), edge pixels colour-bled.
  *   Its edge pixels are colour-bled before encoding, since HEVC smears alpha
  *   and would otherwise reveal the red backdrop as a fringe.
  * - iOS in the phone layout (`solid` given): an ordinary H.264 MP4 with the section's
@@ -114,8 +115,10 @@ export function CutoutVideo({
         // iPhones can't render alpha video correctly; everyone else keeps it.
         if (probe.canPlayType('video/mp4; codecs="avc1.640028"')) setSource(solid);
       } else if (webkit) {
-        // Chromium also reports HEVC support but drops its alpha, hence the UA gate.
-        if (mov && probe.canPlayType('video/mp4; codecs="hvc1"')) setSource(mov);
+        // Desktop Safari only: iOS mis-renders HEVC alpha (it gets `solid` in
+        // the phone layout and the still otherwise). Chromium also reports HEVC
+        // support but drops its alpha, hence the UA gate.
+        if (!iOS && mov && probe.canPlayType('video/mp4; codecs="hvc1"')) setSource(mov);
       } else if (probe.canPlayType('video/webm; codecs="vp9"')) {
         setSource(webm);
       }
