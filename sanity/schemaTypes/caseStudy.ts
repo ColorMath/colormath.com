@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { SERVICES } from "../lib/services";
 
 /** A short "how we made this" story, published at /work/<slug>/. */
 export const caseStudy = defineType({
@@ -6,6 +7,7 @@ export const caseStudy = defineType({
   title: "Case Study",
   type: "document",
   fields: [
+    defineField({ name: "eyebrow", title: "Label above the title", description: "Defaults to \"Case study\"", type: "string" }),
     defineField({ name: "title", title: "Title", type: "string", validation: (r) => r.required() }),
     defineField({
       name: "slug",
@@ -13,6 +15,75 @@ export const caseStudy = defineType({
       type: "slug",
       options: { source: "title" },
       validation: (r) => r.required(),
+    }),
+    defineField({
+      name: "companies",
+      title: "Companies",
+      description: "Who the work was for. Each links to a page listing all their case studies.",
+      type: "array",
+      of: [defineArrayMember({ type: "reference", to: [{ type: "company" }] })],
+    }),
+    defineField({
+      name: "services",
+      title: "Services",
+      type: "array",
+      of: [defineArrayMember({ type: "string" })],
+      options: { list: SERVICES.map((s) => ({ title: s.title, value: s.value })), layout: "grid" },
+    }),
+    defineField({
+      name: "deliverables",
+      title: "Deliverables",
+      description: "Free-form, e.g. Brand, GTM strategy, End-to-end app, MCP",
+      type: "array",
+      of: [defineArrayMember({ type: "string" })],
+      options: { layout: "tags" },
+    }),
+    defineField({
+      name: "heroImage",
+      title: "Hero image (optional)",
+      description: "Runs full-bleed behind the title; the logo and text flip to white. Leave empty for the light hero.",
+      type: "object",
+      fields: [
+        defineField({ name: "src", title: "Image path", type: "string" }),
+        defineField({ name: "alt", title: "Alt text", type: "string" }),
+        defineField({ name: "position", title: "Focal point", description: "CSS object-position, e.g. 50% 40%", type: "string" }),
+        defineField({
+          name: "overlayColor",
+          title: "Overlay color",
+          description: "Hex, e.g. #141A28. Defaults to our ink (#211F1E).",
+          type: "string",
+          validation: (r) => r.regex(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i, { name: "hex color" }),
+        }),
+        defineField({
+          name: "overlayColorTo",
+          title: "Overlay gradient to (optional)",
+          description: "Hex. When set, the overlay runs left to right from Overlay color to this one, like the homepage hero (#7D0735 → #B9040C).",
+          type: "string",
+          validation: (r) => r.regex(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i, { name: "hex color" }),
+        }),
+        defineField({
+          name: "overlayStrength",
+          title: "Overlay strength",
+          description: "0 (none) to 100 (strongest). Defaults to 60; keep text readable.",
+          type: "number",
+          validation: (r) => r.min(0).max(100),
+        }),
+      ],
+    }),
+    defineField({
+      name: "cover",
+      title: "Cover image (for /work)",
+      type: "object",
+      fields: [
+        defineField({ name: "src", title: "Image path", type: "string" }),
+        defineField({ name: "alt", title: "Alt text", type: "string" }),
+      ],
+    }),
+    defineField({
+      name: "order",
+      title: "Order on /work",
+      description: "Lower numbers first",
+      type: "number",
     }),
     defineField({ name: "dek", title: "Summary", description: "One line under the title. Wrap a word in *asterisks* for italics.", type: "text", rows: 2 }),
     defineField({
@@ -46,6 +117,7 @@ export const caseStudy = defineType({
         }),
       ],
     }),
+    defineField({ name: "shotsHeading", title: "Heading for the final work", description: "Defaults to \"The work\"", type: "string" }),
     defineField({
       name: "shots",
       title: "Final shots",

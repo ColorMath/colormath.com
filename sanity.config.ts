@@ -28,6 +28,7 @@ export default defineConfig({
                   .documentId("landingPage")
               ),
             S.documentTypeListItem("caseStudy").title("Case Studies"),
+            S.documentTypeListItem("company").title("Companies"),
           ]),
     }),
     visionTool(),
