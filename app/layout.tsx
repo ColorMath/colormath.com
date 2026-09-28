@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PT_Serif, Fira_Sans_Condensed } from "next/font/google";
+import { Analytics } from "./components/Analytics";
 import "./globals.css";
 
 const ptSerif = PT_Serif({
@@ -35,6 +36,8 @@ export default function RootLayout({
         </a>
         {children}
       </body>
+      {/* Set at build time by the deploy workflow; absent locally, so dev visits aren't counted. */}
+      {process.env.NEXT_PUBLIC_GA_ID && <Analytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
     </html>
   );
 }
