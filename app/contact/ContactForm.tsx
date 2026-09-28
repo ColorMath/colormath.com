@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { sendGAEvent } from "@next/third-parties/google";
 
 /** The Tally form behind /contact (notifications go to both founders; set in Tally). */
 const TALLY_FORM_ID = "LZlg11";
@@ -27,7 +28,10 @@ export function ContactForm() {
       if (e.origin !== "https://tally.so" || typeof e.data !== "string") return;
       try {
         const msg = JSON.parse(e.data);
-        if (msg?.event === "Tally.FormSubmitted" && msg?.payload?.formId === TALLY_FORM_ID) setSent(true);
+        if (msg?.event === "Tally.FormSubmitted" && msg?.payload?.formId === TALLY_FORM_ID) {
+          setSent(true);
+          sendGAEvent("event", "generate_lead", { form: "contact" });
+        }
       } catch {
         // not a Tally message
       }
