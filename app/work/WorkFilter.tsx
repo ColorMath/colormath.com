@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { serviceTagClass } from "@/sanity/lib/services";
 
 export type FilterTag = { slug: string; label: string };
 
@@ -49,7 +50,7 @@ export function WorkFilter({ clients, areas }: { clients: FilterTag[]; areas: Fi
             on
               ? tone === "ink"
                 ? "bg-ink text-paper"
-                : "bg-yellow text-ink"
+                : (serviceTagClass[t.slug] ?? "bg-yellow text-ink")
               : "bg-transparent text-ink ring-2 ring-ink/15 ring-inset hover:ring-ink/60"
           }`}
         >
