@@ -115,6 +115,35 @@ export const caseStudy = defineType({
             ],
           },
         }),
+        defineArrayMember({
+          name: "imageGroup",
+          title: "Images",
+          type: "object",
+          description: "One to three images side by side, placed in the story. Web copies live in public/case-studies/<slug>/",
+          fields: [
+            defineField({
+              name: "images",
+              title: "Images",
+              type: "array",
+              validation: (r) => r.min(1).max(3),
+              of: [
+                defineArrayMember({
+                  type: "object",
+                  fields: [
+                    defineField({ name: "src", title: "Image path", type: "string" }),
+                    defineField({ name: "alt", title: "Alt text", type: "string", validation: (r) => r.required() }),
+                  ],
+                  preview: { select: { title: "alt", subtitle: "src" } },
+                }),
+              ],
+            }),
+            defineField({ name: "caption", title: "Caption", type: "string" }),
+          ],
+          preview: {
+            select: { caption: "caption", first: "images.0.alt" },
+            prepare: ({ caption, first }) => ({ title: caption || first || "Images" }),
+          },
+        }),
       ],
     }),
     defineField({ name: "shotsHeading", title: "Heading for the final work", description: "Defaults to \"The work\"", type: "string" }),
@@ -132,9 +161,9 @@ export const caseStudy = defineType({
             defineField({
               name: "layout",
               title: "Layout",
-              description: "Desktop size: full row, two-thirds (pair with a tall), or one third",
+              description: "Desktop: full row; wide (2/3, cropped 3:2, pair with a tall); tall (1/3, cropped 3:4); third (1/3, never cropped)",
               type: "string",
-              options: { list: ["full", "wide", "tall"], layout: "radio" },
+              options: { list: ["full", "wide", "tall", "third"], layout: "radio" },
             }),
           ],
           preview: { select: { title: "alt", subtitle: "layout" } },
