@@ -307,3 +307,15 @@
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 80%, transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 80%, transparent 100%);
 }
+
+/* A pull quote in a case study: large type on a solid highlight in the
+   client's brand color (--quote), like the homepage nav swipe at rest, with
+   ink or paper text (--quote-ink), whichever reads better on it. The
+   highlight wraps line by line. */
+.pull-quote-text {
+  background: var(--quote);
+  color: var(--quote-ink);
+  padding: 0.08em 0.3em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}

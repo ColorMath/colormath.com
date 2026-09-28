@@ -48,6 +48,7 @@ One staggered fade-up on first load (hero only), 650ms, ease-out. Full stop unde
 - Don't name the founders in the third person inside "we" copy: "both of us", not "Jessica and Craig".
 - The hero may open with the brand name ("Color/Math is a…"); that's the only third-person reference to the studio.
 - Spelling: **multi-disciplinary** (hyphenated), matching the hero and the share preview.
+- Never start a sentence with "So", anywhere in site copy.
 
 ## Components
 
