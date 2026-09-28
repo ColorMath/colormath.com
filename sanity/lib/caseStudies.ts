@@ -2,7 +2,7 @@ import { groq } from "next-sanity";
 import type { PortableTextBlock } from "@portabletext/react";
 import { client } from "./client";
 
-export type Credit = { role: string; name: string; url?: string };
+export type Credit = { role: string; name: string; url?: string; note?: string; noteUrl?: string };
 export type Company = { name: string; slug: string; url?: string; color?: string };
 /** full = whole row; wide = two-thirds of a row; tall = one third (desktop). */
 export type Photo = { src: string; alt: string; layout?: "full" | "wide" | "tall" | "third" };
@@ -16,7 +16,7 @@ export type CaseStudy = {
   services: string[];
   deliverables: string[];
   cover?: Photo;
-  heroImage?: Photo & { position?: string; overlayColor?: string; overlayColorTo?: string; overlayStrength?: number };
+  heroImage?: Photo & { position?: string; overlayColor?: string; overlayColorTo?: string; overlayStrength?: number; overlayLeft?: number; overlayRight?: number };
   order?: number;
   videoUrl?: string;
   posterUrl?: string;
@@ -105,8 +105,8 @@ export const fallbackCaseStudies: CaseStudy[] = [
 
 const query = groq`*[_type == "caseStudy" && defined(slug.current)]{
   eyebrow, shotsHeading, title, "slug": slug.current, dek, "companies": companies[]->{ name, "slug": slug.current, url, color }, services, deliverables,
-  cover{ src, alt }, heroImage{ src, alt, position, overlayColor, overlayColorTo, overlayStrength }, order, videoUrl, posterUrl, videoCaption, body,
-  shots[]{ src, alt, layout }, gallery[]{ src, alt }, credits[]{ role, name, url }
+  cover{ src, alt }, heroImage{ src, alt, position, overlayColor, overlayColorTo, overlayStrength, overlayLeft, overlayRight }, order, videoUrl, posterUrl, videoCaption, body,
+  shots[]{ src, alt, layout }, gallery[]{ src, alt }, credits[]{ role, name, url, note, noteUrl }
 }`;
 
 /** Sanity's case studies, or the fallback copy when Sanity is unavailable. */
