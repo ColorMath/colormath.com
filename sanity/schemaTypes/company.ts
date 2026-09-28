@@ -1,6 +1,6 @@
 import { defineField, defineType } from "sanity";
 
-/** A company we've worked with; case studies reference it, /work/company/<slug>/ lists them. */
+/** A company we've worked with; case studies reference it, /work/#<slug> filters to them. */
 export const company = defineType({
   name: "company",
   title: "Company",
