@@ -103,9 +103,9 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
     <>
         {/* With a video: video left, story right. Without: the story takes
             two-thirds (a comfortable ~70ch measure) and the facts sit beside it. */}
-        <section className="bg-paper">
+        <section className="border-t-2 border-ink bg-paper">
           <div
-            className={`mx-auto grid w-[calc(100%-3rem)] max-w-[calc(72rem-3rem)] gap-12 border-t-2 border-ink py-16 md:py-20 ${
+            className={`mx-auto grid w-full max-w-6xl gap-12 px-6 py-16 md:py-20 ${
               study.videoUrl
                 ? "md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]"
                 : "md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:gap-16"
