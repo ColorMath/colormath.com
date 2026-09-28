@@ -245,20 +245,26 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       {/* rest: the story, final work and on-set gallery, shared by both heroes */}
       {(() => {
         const hero = study.heroImage?.src ? study.heroImage : null;
-        const intro = (
-          <>
+        // The back link sits in the same spot on every case study: just under
+        // the header, whatever the hero.
+        const back = (
+          <div className="mx-auto w-full max-w-6xl px-6 pt-8">
             <a
-              href="/"
+              href="/work/"
               className={`inline-flex items-center gap-2 font-display text-base font-bold underline decoration-transparent decoration-2 underline-offset-4 transition-colors ${
                 hero ? "hover:decoration-yellow focus-visible:decoration-yellow" : "hover:decoration-violet focus-visible:decoration-violet"
               }`}
             >
-              <svg aria-hidden viewBox="0 0 10 12" className="h-3 w-2.5 fill-current">
+              <svg aria-hidden viewBox="0 0 10 12" className="h-2.5 w-2 fill-current">
                 <path d="M0 6 10 0v12z" />
               </svg>
-              Back to Color/Math
+              Back to Work
             </a>
-            <p className="mt-10 font-display text-lg font-bold">{study.eyebrow || "Case study"}</p>
+          </div>
+        );
+        const intro = (
+          <>
+            <p className="font-display text-lg font-bold">{study.eyebrow || "Case study"}</p>
             <h1 className="mt-2 max-w-[20ch] font-display text-[clamp(2.5rem,5.5vw,4.25rem)] font-bold leading-[1.06]">
               {study.title}
             </h1>
@@ -290,9 +296,10 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           return (
             <>
               <header className="bg-paper text-ink">{nav}</header>
+              <div className="bg-paper text-ink">{back}</div>
               <main id="main" tabIndex={-1} className="outline-none">
                 <section className="bg-paper text-ink">
-                  <div className="mx-auto w-full max-w-6xl px-6 pt-12 pb-4 md:pt-16">{intro}</div>
+                  <div className="mx-auto w-full max-w-6xl px-6 pt-10 pb-4 md:pt-12">{intro}</div>
                 </section>
                 {rest}
               </main>
@@ -314,7 +321,8 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
               />
               <div aria-hidden className="absolute inset-0 -z-10" style={overlayStyle(hero)} />
               <header>{nav}</header>
-              <div className="mx-auto flex min-h-[min(88vh,56rem)] w-full max-w-6xl flex-col justify-end px-6 pt-24 pb-14 md:pb-20">
+              {back}
+              <div className="mx-auto flex min-h-[min(80vh,50rem)] w-full max-w-6xl flex-col justify-end px-6 pt-16 pb-14 md:pb-20">
                 {intro}
               </div>
             </div>

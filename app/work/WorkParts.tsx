@@ -12,14 +12,14 @@ export function Tags({ study, onDark = false }: { study: CaseStudy; onDark?: boo
     <ul className="flex flex-wrap gap-2" aria-label="Tags">
       {study.companies.map((c) => (
         <li key={`c-${c.slug}`}>
-          <a href={`/work/company/${c.slug}/`} className={`${tag} ${onDark ? "bg-paper text-ink" : "bg-ink text-paper"}`}>
+          <a href={`/work/#${c.slug}`} className={`${tag} ${onDark ? "bg-paper text-ink" : "bg-ink text-paper"}`}>
             {c.name}
           </a>
         </li>
       ))}
       {study.services.map((s) => (
         <li key={`s-${s}`}>
-          <a href={`/work/service/${s}/`} className={`${tag} ${onDark ? "bg-yellow text-ink" : "bg-yellow text-ink"}`}>
+          <a href={`/work/#${s}`} className={`${tag} ${onDark ? "bg-yellow text-ink" : "bg-yellow text-ink"}`}>
             {serviceTitle(s)}
           </a>
         </li>
@@ -31,7 +31,7 @@ export function Tags({ study, onDark = false }: { study: CaseStudy; onDark?: boo
 /** A case study card for /work and the company/service lists. */
 export function CaseCard({ study }: { study: CaseStudy }) {
   return (
-    <li className="flex flex-col">
+    <li className="flex flex-col" data-work-tags={[...study.companies.map((c) => c.slug), ...study.services].join(" ")}>
       <a href={`/work/${study.slug}/`} className="group block">
         {study.cover && (
           /* eslint-disable-next-line @next/next/no-img-element */
@@ -58,11 +58,13 @@ export function WorkShell({
   title,
   intro,
   studies,
+  filter,
 }: {
   eyebrow?: string;
   title: string;
   intro?: string;
   studies: CaseStudy[];
+  filter?: React.ReactNode;
 }) {
   return (
     <>
@@ -87,6 +89,7 @@ export function WorkShell({
         </section>
         <section className="bg-paper">
           <div className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
+            {filter && <div className="mb-12">{filter}</div>}
             {studies.length ? (
               <ul className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
                 {studies.map((s) => (
