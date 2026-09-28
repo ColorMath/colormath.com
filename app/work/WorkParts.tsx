@@ -1,6 +1,8 @@
+import fs from "node:fs";
+import path from "node:path";
 import { Wordmark } from "../components/Wordmark";
 import type { CaseStudy } from "@/sanity/lib/caseStudies";
-import { serviceTitle } from "@/sanity/lib/services";
+import { serviceTagClass, serviceTitle } from "@/sanity/lib/services";
 
 const tag =
   "inline-block px-2 py-0.5 font-display text-sm font-bold underline decoration-transparent decoration-2 underline-offset-4 transition-colors hover:decoration-current focus-visible:decoration-current";
@@ -19,7 +21,7 @@ export function Tags({ study, onDark = false }: { study: CaseStudy; onDark?: boo
       ))}
       {study.services.map((s) => (
         <li key={`s-${s}`}>
-          <a href={`/work/#${s}`} className={`${tag} ${onDark ? "bg-yellow text-ink" : "bg-yellow text-ink"}`}>
+          <a href={`/work/#${s}`} className={`${tag} ${serviceTagClass[s] ?? "bg-yellow text-ink"}`}>
             {serviceTitle(s)}
           </a>
         </li>
@@ -28,25 +30,58 @@ export function Tags({ study, onDark = false }: { study: CaseStudy; onDark?: boo
   );
 }
 
-/** A case study card for /work and the company/service lists. */
+/** Does public/logos/<slug>.svg exist? Checked at build time. */
+function hasLogo(slug: string) {
+  return fs.existsSync(path.join(process.cwd(), "public", "logos", `${slug}.svg`));
+}
+
+/**
+ * The /work panel image: the study's cover, or a placeholder of the client's
+ * logo on its brand color (ink when none is set) until a cover exists.
+ */
+function Cover({ study }: { study: CaseStudy }) {
+  const box = "aspect-[4/3] w-full md:aspect-[21/9]";
+  if (study.cover?.src) {
+    /* eslint-disable-next-line @next/next/no-img-element */
+    return <img src={study.cover.src} alt="" loading="lazy" className={`${box} object-cover`} />;
+  }
+  const company = study.companies[0];
+  return (
+    <div aria-hidden className={`${box} flex items-center justify-center`} style={{ backgroundColor: company?.color || "#211F1E" }}>
+      {company && hasLogo(company.slug) ? (
+        <span
+          className="logo-mark block aspect-[432/218] w-[min(60%,26rem)] text-paper"
+          style={{ "--logo": `url(/logos/${company.slug}.svg)` } as React.CSSProperties}
+        />
+      ) : (
+        <span className="font-display text-4xl font-bold text-paper md:text-6xl">{company?.name ?? study.title}</span>
+      )}
+    </div>
+  );
+}
+
+/** A full-width case study panel for /work. */
 export function CaseCard({ study }: { study: CaseStudy }) {
   return (
-    <li className="flex flex-col" data-work-tags={[...study.companies.map((c) => c.slug), ...study.services].join(" ")}>
+    <li data-work-tags={[...study.companies.map((c) => c.slug), ...study.services].join(" ")}>
       <a href={`/work/${study.slug}/`} className="group block">
-        {study.cover && (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img src={study.cover.src} alt="" loading="lazy" className="aspect-[4/3] w-full object-cover" />
-        )}
-        <h2 className="mt-4 font-display text-2xl font-bold underline decoration-transparent decoration-2 underline-offset-4 group-hover:decoration-current">
-          {study.title}
-        </h2>
+        <Cover study={study} />
       </a>
-      {study.dek && <p className="mt-2 text-lg leading-snug">{study.dek.replace(/\*/g, "")}</p>}
-      {study.deliverables.length > 0 && (
-        <p className="mt-2 text-sm opacity-80">{study.deliverables.join(" · ")}</p>
-      )}
-      <div className="mt-4">
-        <Tags study={study} />
+      <div className="mt-6 grid gap-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-12">
+        <div>
+          <a href={`/work/${study.slug}/`} className="group">
+            <h2 className="font-display text-3xl font-bold underline decoration-transparent decoration-2 underline-offset-4 group-hover:decoration-current md:text-4xl">
+              {study.title}
+            </h2>
+          </a>
+          {study.dek && <p className="mt-3 max-w-[40rem] text-lg leading-snug md:text-xl">{study.dek.replace(/\*/g, "")}</p>}
+        </div>
+        <div className="md:pt-2">
+          {study.deliverables.length > 0 && <p className="text-sm opacity-80">{study.deliverables.join(" · ")}</p>}
+          <div className="mt-4">
+            <Tags study={study} />
+          </div>
+        </div>
       </div>
     </li>
   );
@@ -91,7 +126,7 @@ export function WorkShell({
           <div className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
             {filter && <div className="mb-12">{filter}</div>}
             {studies.length ? (
-              <ul className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+              <ul className="grid gap-20 md:gap-28">
                 {studies.map((s) => (
                   <CaseCard key={s.slug} study={s} />
                 ))}
