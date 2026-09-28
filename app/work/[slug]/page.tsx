@@ -33,7 +33,27 @@ function Emphasis({ text }: { text: string }) {
 /** The summary without its *emphasis* markers, for metadata. */
 const plain = (text?: string) => text?.replace(/\*/g, "");
 
+type ImageGroupValue = { images?: { src?: string; alt?: string }[]; caption?: string };
+
 const body: PortableTextComponents = {
+  types: {
+    // Inline images in the story: 1–3 side by side, uncropped, optional caption.
+    imageGroup: ({ value }: { value: ImageGroupValue }) => {
+      const images = (value.images ?? []).filter((i) => i.src);
+      if (!images.length) return null;
+      return (
+        <figure className="my-10">
+          <div className={`grid gap-4 ${images.length === 2 ? "sm:grid-cols-2" : images.length === 3 ? "grid-cols-3" : ""}`}>
+            {images.map((img) => (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img key={img.src} src={img.src} alt={img.alt ?? ""} loading="lazy" className="block h-auto w-full" />
+            ))}
+          </div>
+          {value.caption && <figcaption className="mt-3 text-sm opacity-80">{value.caption}</figcaption>}
+        </figure>
+      );
+    },
+  },
   block: {
     normal: ({ children }) => <p className="mt-5 text-lg leading-relaxed first:mt-0">{children}</p>,
     h2: ({ children }) => <h2 className="mt-10 font-display text-2xl font-bold">{children}</h2>,
@@ -149,13 +169,23 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         </section>
 
         {study.shots.length > 0 && (
-          <section aria-labelledby="shots-heading" className="bg-red text-paper on-dark">
+          /* Our own studies sit on our red; client work sits on paper so our
+             brand never competes with theirs. */
+          <section
+            aria-labelledby="shots-heading"
+            className={
+              study.companies.some((c) => c.slug === "colormath")
+                ? "bg-red text-paper on-dark"
+                : "border-t-2 border-ink bg-paper text-ink"
+            }
+          >
             <div className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
               <h2 id="shots-heading" className="font-display text-2xl font-bold md:text-3xl">
                 {study.shotsHeading || "The work"}
               </h2>
-              {/* Desktop rows: a full-width shot, or a wide (3:2) beside a tall
-                  (cropped to 3:4) so the pair lines up at the same height. */}
+              {/* Desktop rows: a full-width shot, a wide (3:2) beside a tall
+                  (cropped to 3:4) so the pair lines up, or three uncropped
+                  thirds (for illustrations and anything that mustn't be cut). */}
               <ul className="mt-10 grid gap-5 md:grid-cols-3">
                 {study.shots.map((photo) => (
                   <li
@@ -165,7 +195,9 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                         ? "md:col-span-3"
                         : photo.layout === "wide"
                           ? "md:col-span-2"
-                          : ""
+                          : photo.layout === "third"
+                            ? "self-center"
+                            : ""
                     }
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}

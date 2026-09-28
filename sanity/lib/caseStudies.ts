@@ -5,7 +5,7 @@ import { client } from "./client";
 export type Credit = { role: string; name: string; url?: string };
 export type Company = { name: string; slug: string; url?: string };
 /** full = whole row; wide = two-thirds of a row; tall = one third (desktop). */
-export type Photo = { src: string; alt: string; layout?: "full" | "wide" | "tall" };
+export type Photo = { src: string; alt: string; layout?: "full" | "wide" | "tall" | "third" };
 export type CaseStudy = {
   eyebrow?: string;
   shotsHeading?: string;
