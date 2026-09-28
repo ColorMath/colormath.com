@@ -29,3 +29,4 @@ next-env.d.ts
 /assets/img/engineering.jpg
 /assets/video/
 /assets/case-studies/*/originals/
+/assets/case-studies/*/research.md

@@ -3,12 +3,21 @@ import type { PortableTextBlock } from "@portabletext/react";
 import { client } from "./client";
 
 export type Credit = { role: string; name: string; url?: string };
+export type Company = { name: string; slug: string; url?: string };
 /** full = whole row; wide = two-thirds of a row; tall = one third (desktop). */
 export type Photo = { src: string; alt: string; layout?: "full" | "wide" | "tall" };
 export type CaseStudy = {
+  eyebrow?: string;
+  shotsHeading?: string;
   title: string;
   slug: string;
   dek?: string;
+  companies: Company[];
+  services: string[];
+  deliverables: string[];
+  cover?: Photo;
+  heroImage?: Photo & { position?: string; overlayColor?: string; overlayColorTo?: string; overlayStrength?: number };
+  order?: number;
   videoUrl?: string;
   posterUrl?: string;
   videoCaption?: string;
@@ -30,9 +39,17 @@ const block = (children: ReturnType<typeof span>[], markDefs: object[] = []) => 
 /** Same copy as the Sanity document, so the page builds without Sanity. */
 export const fallbackCaseStudies: CaseStudy[] = [
   {
+    eyebrow: "Behind the scenes",
+    shotsHeading: "The shots",
     title: "Building the Color/Math Brand",
     slug: "building-blocks",
-    dek: "A behind-the-scenes look at the *hand*-made Color/Math brand (emphasis on *hand*).",
+    companies: [{ name: "Color/Math", slug: "colormath", url: "https://colormath.com" }],
+    services: ["design"],
+    deliverables: ["Brand", "Creative direction", "Photography"],
+    heroImage: { src: "/case-studies/building-blocks/shot-01-blocks.webp", alt: "Two hands rise through holes in a violet table to build a block tower against the red wall.", position: "50% 45%", overlayColor: "#7D0735", overlayColorTo: "#B9040C", overlayStrength: 60 },
+    cover: { src: "/case-studies/building-blocks/shot-08-block-tower.webp", alt: "A tall tower of wooden blocks topped with a triangle, on red." },
+    order: 10,
+    dek: "A behind-the-scenes look at the *hand*-made Color/Math brand.",
     videoUrl: "/case-studies/building-blocks/under-the-table.mp4",
     posterUrl: "/case-studies/building-blocks/under-the-table.jpg",
     videoCaption: "Behind the scenes, under the table.",
@@ -87,7 +104,8 @@ export const fallbackCaseStudies: CaseStudy[] = [
 ];
 
 const query = groq`*[_type == "caseStudy" && defined(slug.current)]{
-  title, "slug": slug.current, dek, videoUrl, posterUrl, videoCaption, body,
+  eyebrow, shotsHeading, title, "slug": slug.current, dek, "companies": companies[]->{ name, "slug": slug.current, url }, services, deliverables,
+  cover{ src, alt }, heroImage{ src, alt, position, overlayColor, overlayColorTo, overlayStrength }, order, videoUrl, posterUrl, videoCaption, body,
   shots[]{ src, alt, layout }, gallery[]{ src, alt }, credits[]{ role, name, url }
 }`;
 
@@ -96,9 +114,19 @@ export async function getCaseStudies(): Promise<CaseStudy[]> {
   if (!client) return fallbackCaseStudies;
   try {
     const docs: CaseStudy[] = await client.fetch(query);
-    return docs.length ? docs.map((d) => ({ ...d, body: d.body ?? [], shots: d.shots ?? [], gallery: d.gallery ?? [], credits: d.credits ?? [] })) : fallbackCaseStudies;
+    return docs.length ? docs
+          .map((d) => ({ ...d, companies: (d.companies ?? []).filter(Boolean), services: d.services ?? [], deliverables: d.deliverables ?? [], body: d.body ?? [], shots: d.shots ?? [], gallery: d.gallery ?? [], credits: d.credits ?? [] }))
+          .sort((a, b) => (a.order ?? 999) - (b.order ?? 999) || a.title.localeCompare(b.title))
+      : fallbackCaseStudies;
   } catch (error) {
     console.warn("Sanity case study fetch failed; using fallback.", error);
     return fallbackCaseStudies;
   }
+}
+
+/** Every company with at least one published case study. */
+export function companiesOf(studies: CaseStudy[]): Company[] {
+  const map = new Map<string, Company>();
+  for (const s of studies) for (const c of s.companies) map.set(c.slug, c);
+  return [...map.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
