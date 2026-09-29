@@ -157,15 +157,16 @@ export default async function Home() {
           <a href="#top" aria-label="Color/Math home">
             <Wordmark className="h-10 w-auto" />
           </a>
-          <a
-            href="/contact/"
-            className="nav-swipe font-display text-lg font-bold"
-          >
-            <span aria-hidden className="mr-1.5">
-              /
-            </span>
-            Contact
-          </a>
+          <nav aria-label="Main" className="flex items-center gap-x-6">
+            <a href="/work/" className="nav-swipe font-display text-lg font-bold">
+              <span aria-hidden className="mr-1.5">/</span>
+              Work
+            </a>
+            <a href="/contact/" className="nav-swipe font-display text-lg font-bold">
+              <span aria-hidden className="mr-1.5">/</span>
+              Contact
+            </a>
+          </nav>
         </header>
 
       <main id="main" tabIndex={-1} className="outline-none">
