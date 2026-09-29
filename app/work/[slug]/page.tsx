@@ -258,7 +258,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         const intro = (
           <>
             {study.eyebrow ? (
-              <p className="inline-block bg-ink px-2 py-0.5 font-display text-lg font-bold text-paper">{study.eyebrow}</p>
+              <p className="block w-fit justify-self-start self-start bg-ink px-2 py-0.5 font-display text-lg font-bold text-paper">{study.eyebrow}</p>
             ) : (
               <p className="font-display text-lg font-bold">Case study</p>
             )}

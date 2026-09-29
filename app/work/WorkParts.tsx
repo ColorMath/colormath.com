@@ -89,7 +89,7 @@ export function CaseCard({ study }: { study: CaseStudy }) {
       <div className="mt-6 grid gap-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-12">
         <div>
           {study.eyebrow && (
-            <p className="mb-3 inline-block bg-ink px-2 py-0.5 font-display text-sm font-bold text-paper">{study.eyebrow}</p>
+            <p className="mb-3 block w-fit justify-self-start self-start bg-ink px-2 py-0.5 font-display text-sm font-bold text-paper">{study.eyebrow}</p>
           )}
           <a href={`/work/${study.slug}/`} className="group block">
             <h2 className="font-display text-3xl font-bold underline decoration-transparent decoration-2 underline-offset-4 group-hover:decoration-current md:text-4xl">
