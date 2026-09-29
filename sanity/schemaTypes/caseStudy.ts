@@ -90,6 +90,27 @@ export const caseStudy = defineType({
       fields: [
         defineField({ name: "src", title: "Image path", type: "string" }),
         defineField({ name: "alt", title: "Alt text", type: "string" }),
+        defineField({
+          name: "position",
+          title: "Focus point",
+          description: "CSS object-position, e.g. \"50% 30%\". Defaults to center.",
+          type: "string",
+        }),
+        defineField({
+          name: "overlayColor",
+          title: "Overlay color",
+          description: "Hex. Optional color laid over the cover image.",
+          type: "string",
+          validation: (r) => r.regex(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i, { name: "hex color" }),
+        }),
+        defineField({
+          name: "overlayLeft",
+          title: "Overlay opacity, left (%)",
+          description: "Set left and right for a left-to-right wash; set only left for a flat overlay.",
+          type: "number",
+          validation: (r) => r.min(0).max(100),
+        }),
+        defineField({ name: "overlayRight", title: "Overlay opacity, right (%)", type: "number", validation: (r) => r.min(0).max(100) }),
       ],
     }),
     defineField({
@@ -156,6 +177,20 @@ export const caseStudy = defineType({
             select: { caption: "caption", first: "images.0.alt" },
             prepare: ({ caption, first }) => ({ title: caption || first || "Images" }),
           },
+        }),
+        defineArrayMember({
+          name: "videoClip",
+          title: "Video clip (YouTube)",
+          type: "object",
+          description: "Plays one segment of a YouTube video, from Start to End.",
+          fields: [
+            defineField({ name: "youtubeId", title: "YouTube video ID", type: "string", validation: (r) => r.required() }),
+            defineField({ name: "start", title: "Start (seconds)", type: "number", validation: (r) => r.required().min(0) }),
+            defineField({ name: "end", title: "End (seconds)", type: "number" }),
+            defineField({ name: "title", title: "Title (for screen readers)", type: "string", validation: (r) => r.required() }),
+            defineField({ name: "caption", title: "Caption", type: "string" }),
+          ],
+          preview: { select: { title: "title", subtitle: "caption" } },
         }),
         defineArrayMember({
           name: "pullQuote",
