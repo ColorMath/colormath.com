@@ -68,7 +68,7 @@ export default async function NotesIndex() {
                   className="h-auto w-full max-w-[22rem]"
                 />
                 <div>
-                  <h2 className="font-display text-4xl font-bold md:text-5xl">No notes yet.</h2>
+                  <h2 className="font-display text-4xl font-bold md:text-5xl">No studio notes posted yet.</h2>
                   <p className="mt-5 max-w-[40ch] text-lg leading-relaxed md:text-xl">
                     The pineapple is keeping an eye on things (two, actually).
                     Sign up below and the first one comes straight to you.
