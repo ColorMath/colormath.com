@@ -43,10 +43,12 @@ function Cover({ study }: { study: CaseStudy }) {
   const box = "aspect-[4/3] w-full md:aspect-[21/9]";
   const cover = study.cover;
   if (cover?.src) {
-    const color = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(cover.overlayColor ?? "") ? cover.overlayColor : undefined;
+    const hex = (v?: string) => (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v ?? "") ? v : undefined);
+    const color = hex(cover.overlayColor);
+    const colorTo = hex(cover.overlayColorTo) ?? color;
     const pct = (n?: number) => Math.min(100, Math.max(0, Math.round(n ?? 0)));
     const wash = color
-      ? `linear-gradient(to right, color-mix(in srgb, ${color} ${pct(cover.overlayLeft)}%, transparent), color-mix(in srgb, ${color} ${pct(cover.overlayRight ?? cover.overlayLeft)}%, transparent))`
+      ? `linear-gradient(to right, color-mix(in srgb, ${color} ${pct(cover.overlayLeft)}%, transparent), color-mix(in srgb, ${colorTo} ${pct(cover.overlayRight ?? cover.overlayLeft)}%, transparent))`
       : undefined;
     return (
       <div className={`${box} relative overflow-hidden`}>
@@ -86,7 +88,10 @@ export function CaseCard({ study }: { study: CaseStudy }) {
       </a>
       <div className="mt-6 grid gap-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-12">
         <div>
-          <a href={`/work/${study.slug}/`} className="group">
+          {study.eyebrow && (
+            <p className="mb-3 inline-block bg-ink px-2 py-0.5 font-display text-sm font-bold text-paper">{study.eyebrow}</p>
+          )}
+          <a href={`/work/${study.slug}/`} className="group block">
             <h2 className="font-display text-3xl font-bold underline decoration-transparent decoration-2 underline-offset-4 group-hover:decoration-current md:text-4xl">
               {study.title}
             </h2>

@@ -112,6 +112,13 @@ export const caseStudy = defineType({
         }),
         defineField({ name: "overlayRight", title: "Overlay opacity, right (%)", type: "number", validation: (r) => r.min(0).max(100) }),
         defineField({
+          name: "overlayColorTo",
+          title: "Overlay gradient to",
+          description: "Hex. When set, the overlay runs left to right from Overlay color to this one.",
+          type: "string",
+          validation: (r) => r.regex(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i, { name: "hex color" }),
+        }),
+        defineField({
           name: "logo",
           title: "Logo over the cover",
           description: "Optional image path (transparent PNG or SVG), centered over the cover on /work only, not the hero.",
