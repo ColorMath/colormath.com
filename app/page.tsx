@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SiteNav } from "./components/SiteNav";
 import { getLandingContent } from "@/sanity/lib/fetch";
 import type { Founder, Service } from "@/sanity/lib/content";
 import { Wordmark } from "./components/Wordmark";
@@ -157,16 +158,7 @@ export default async function Home() {
           <a href="#top" aria-label="Color/Math home">
             <Wordmark className="h-10 w-auto" />
           </a>
-          <nav aria-label="Main" className="flex items-center gap-x-6">
-            <a href="/work/" className="nav-swipe font-display text-lg font-bold">
-              <span aria-hidden className="mr-1.5">/</span>
-              Work
-            </a>
-            <a href="/contact/" className="nav-swipe font-display text-lg font-bold">
-              <span aria-hidden className="mr-1.5">/</span>
-              Contact
-            </a>
-          </nav>
+          <SiteNav />
         </header>
 
       <main id="main" tabIndex={-1} className="outline-none">
