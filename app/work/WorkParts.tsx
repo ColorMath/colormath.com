@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { SiteNav } from "../components/SiteNav";
 import path from "node:path";
 import { Wordmark } from "../components/Wordmark";
 import type { CaseStudy } from "@/sanity/lib/caseStudies";
@@ -130,16 +131,7 @@ export function WorkShell({
           <a href="/" aria-label="Color/Math home">
             <Wordmark className="h-10 w-auto" />
           </a>
-          <nav aria-label="Main" className="flex items-center gap-x-6">
-            <a href="/work/" aria-current="page" className="nav-swipe font-display text-lg font-bold">
-              <span aria-hidden className="mr-1.5">/</span>
-              Work
-            </a>
-            <a href="/contact/" className="nav-swipe font-display text-lg font-bold">
-              <span aria-hidden className="mr-1.5">/</span>
-              Contact
-            </a>
-          </nav>
+          <SiteNav current="Work" />
         </div>
       </header>
       <main id="main" tabIndex={-1} className="outline-none">
