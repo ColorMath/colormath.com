@@ -1,15 +1,28 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 /**
- * A standalone article (e.g. a reference doc) at /notes/<slug>/. Notes are
- * not listed anywhere on the site; they are only reachable by link, such as
- * from a case study.
+ * A Studio notes post at /notes/<slug>/. Hidden notes (e.g. a reference doc
+ * linked from a case study) still build and work by direct link, but are left
+ * out of every list of notes.
  */
 export const note = defineType({
   name: "note",
   title: "Note",
   type: "document",
   fields: [
+    defineField({
+      name: "hidden",
+      title: "Hidden",
+      description: "Hidden notes still work by direct link, but don't appear in the list of notes.",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
+      name: "publishedAt",
+      title: "Published date",
+      description: "Shown on the post and used to order the list. Defaults to when the note was created.",
+      type: "date",
+    }),
     defineField({ name: "eyebrow", title: "Eyebrow", type: "string" }),
     defineField({ name: "title", title: "Title", type: "string", validation: (r) => r.required() }),
     defineField({ name: "slug", title: "Slug", type: "slug", options: { source: "title" }, validation: (r) => r.required() }),
@@ -31,4 +44,11 @@ export const note = defineType({
       ],
     }),
   ],
+  preview: {
+    select: { title: "title", hidden: "hidden", slug: "slug.current" },
+    prepare: ({ title, hidden, slug }) => ({
+      title,
+      subtitle: `${hidden ? "Hidden · " : ""}/notes/${slug ?? ""}`,
+    }),
+  },
 });

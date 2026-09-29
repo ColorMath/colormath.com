@@ -35,7 +35,7 @@ const label = "block font-display text-base font-bold";
  * mail. Loops only writes custom properties when it creates a contact, so an
  * existing subscriber resubmitting won't change a saved address.
  */
-export function MailingListForm({ source }: { source: "home" | "mail" }) {
+export function MailingListForm({ source }: { source: "home" | "notes" | "signup" }) {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
   const [withAddress, setWithAddress] = useState(false);
@@ -96,14 +96,14 @@ export function MailingListForm({ source }: { source: "home" | "mail" }) {
       <div ref={thanksRef} tabIndex={-1} role="status" className="max-w-2xl outline-none">
         <p className="font-display text-3xl font-bold md:text-4xl">You&apos;re on the list.</p>
         <p className="mt-4 max-w-[42ch] text-lg leading-relaxed">
-          Thanks for signing up. We&apos;ll be in touch when we have something
-          worth sharing{withAddress ? ", and your first real-world mail is on its way next quarter" : ""}.
+          Thanks! Look for us in your inbox{withAddress ? ", and in your mailbox next quarter" : ""}.
         </p>
       </div>
     );
   }
 
-  if (source === "home") {
+  // Compact (email only) everywhere but the signup page itself.
+  if (source !== "signup") {
     return (
       <form onSubmit={onSubmit} className="w-full max-w-xl">
         <label htmlFor={`${id}-email`} className={label}>
@@ -133,8 +133,8 @@ export function MailingListForm({ source }: { source: "home" | "mail" }) {
           </p>
         )}
         <p className="mt-4 text-base leading-relaxed">
-          Want the real-world mail too?{" "}
-          <a href="/mail/" className="font-bold underline decoration-2 underline-offset-4 hover:decoration-yellow">
+          Want the paper one too?{" "}
+          <a href="/notes/signup/" className="font-bold underline decoration-2 underline-offset-4 hover:decoration-yellow">
             Add your address
           </a>
         </p>
@@ -181,8 +181,8 @@ export function MailingListForm({ source }: { source: "home" | "mail" }) {
             className="mt-1 size-5 shrink-0 accent-ink"
           />
           <span>
-            <span className="font-bold">Send me the real-world mail too.</span>{" "}
-            Once a quarter, something printed, in your actual mailbox.
+            <span className="font-bold">Send me the paper one too.</span>{" "}
+            Once a quarter, to your door.
           </span>
         </label>
       </div>
@@ -226,8 +226,8 @@ export function MailingListForm({ source }: { source: "home" | "mail" }) {
       )}
 
       <p className="mt-6 max-w-[52ch] text-sm leading-relaxed">
-        We&apos;ll only use your address for our own mail. We never share or
-        sell it, and you can unsubscribe from either any time.
+        Your address is only for our quarterly mail. We don&apos;t share it,
+        and you can unsubscribe from either one anytime.
       </p>
     </form>
   );
