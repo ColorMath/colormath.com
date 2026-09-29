@@ -257,7 +257,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         );
         const intro = (
           <>
-            <p className="font-display text-lg font-bold">{study.eyebrow || "Case study"}</p>
+            {study.eyebrow ? (
+              <p className="inline-block bg-ink px-2 py-0.5 font-display text-lg font-bold text-paper">{study.eyebrow}</p>
+            ) : (
+              <p className="font-display text-lg font-bold">Case study</p>
+            )}
             <h1 className="mt-2 max-w-[20ch] font-display text-[clamp(2.5rem,5.5vw,4.25rem)] font-bold leading-[1.06]">
               {study.title}
             </h1>
