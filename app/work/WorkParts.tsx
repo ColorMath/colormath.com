@@ -53,6 +53,12 @@ function Cover({ study }: { study: CaseStudy }) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={cover.src} alt="" loading="lazy" className="h-full w-full object-cover" style={{ objectPosition: cover.position }} />
         {wash && <div aria-hidden className="absolute inset-0" style={{ backgroundImage: wash }} />}
+        {cover.logo && (
+          <div className="absolute inset-0 flex items-center justify-center p-[8%]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={cover.logo} alt={cover.logoAlt ?? ""} className="h-auto max-h-full w-[min(55%,28rem)] object-contain" />
+          </div>
+        )}
       </div>
     );
   }
