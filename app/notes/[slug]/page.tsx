@@ -1,23 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PortableText, type PortableTextBlock, type PortableTextComponents } from "@portabletext/react";
-import { groq } from "next-sanity";
-import { client } from "@/sanity/lib/client";
+import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import { getNotes } from "@/sanity/lib/notes";
 import { Wordmark } from "../../components/Wordmark";
 import { storyComponents } from "../../components/Story";
-
-type Note = { eyebrow?: string; title: string; slug: string; dek?: string; body: PortableTextBlock[] };
-
-/** Notes are standalone pages reachable only by link (not listed anywhere). */
-async function getNotes(): Promise<Note[]> {
-  if (!client) return [];
-  try {
-    return await client.fetch(groq`*[_type == "note" && defined(slug.current)]{ eyebrow, title, "slug": slug.current, dek, body }`);
-  } catch (error) {
-    console.warn("Sanity note fetch failed.", error);
-    return [];
-  }
-}
 
 export async function generateStaticParams() {
   const notes = await getNotes();

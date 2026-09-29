@@ -29,7 +29,7 @@ export default defineConfig({
               ),
             S.documentTypeListItem("caseStudy").title("Case Studies"),
             S.documentTypeListItem("company").title("Companies"),
-            S.documentTypeListItem("note").title("Notes (hidden pages)"),
+            S.documentTypeListItem("note").title("Studio notes"),
           ]),
     }),
     visionTool(),

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { SiteNav } from "./components/SiteNav";
-import { MailingListForm } from "./components/MailingListForm";
+import { NotesSignupBand } from "./components/NotesSignupBand";
 import { getLandingContent } from "@/sanity/lib/fetch";
 import type { Founder, Service } from "@/sanity/lib/content";
 import { Wordmark } from "./components/Wordmark";
@@ -375,21 +375,12 @@ export default async function Home() {
         <LogoMarquee companies={companies} />
       </section>
 
-      {/* Violet field: mailing list (the address form lives on /mail) */}
-      <section aria-labelledby="mail-heading" className="on-dark bg-violet text-paper">
-        <div className="mx-auto grid w-full max-w-6xl items-end gap-x-16 gap-y-8 px-6 py-14 md:grid-cols-2 md:py-20">
-          <div>
-            <h2 id="mail-heading" className="font-display text-3xl font-bold md:text-5xl">
-              Get our mail
-            </h2>
-            <p className="mt-4 max-w-[40ch] text-lg leading-relaxed">
-              Email when we have something worth sharing. And once a quarter,
-              real-world mail in your actual mailbox.
-            </p>
-          </div>
-          <MailingListForm source="home" />
-        </div>
-      </section>
+      {/* Violet field: Studio notes signup (the address form is on /notes/signup) */}
+      <NotesSignupBand source="home">
+        Interesting things for your inbox (and once a quarter, your mailbox):
+        what we&apos;re building, what&apos;s working, and what we&apos;d do
+        differently.
+      </NotesSignupBand>
 
       {/* Yellow field: contact */}
       <section aria-labelledby="contact-heading" className="bg-yellow text-ink">
