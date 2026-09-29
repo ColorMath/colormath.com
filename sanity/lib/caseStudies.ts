@@ -15,7 +15,7 @@ export type CaseStudy = {
   companies: Company[];
   services: string[];
   deliverables: string[];
-  cover?: Photo;
+  cover?: Photo & { position?: string; overlayColor?: string; overlayLeft?: number; overlayRight?: number };
   heroImage?: Photo & { position?: string; overlayColor?: string; overlayColorTo?: string; overlayStrength?: number; overlayLeft?: number; overlayRight?: number };
   order?: number;
   videoUrl?: string;
@@ -105,7 +105,7 @@ export const fallbackCaseStudies: CaseStudy[] = [
 
 const query = groq`*[_type == "caseStudy" && defined(slug.current)]{
   eyebrow, shotsHeading, title, "slug": slug.current, dek, "companies": companies[]->{ name, "slug": slug.current, url, color }, services, deliverables,
-  cover{ src, alt }, heroImage{ src, alt, position, overlayColor, overlayColorTo, overlayStrength, overlayLeft, overlayRight }, order, videoUrl, posterUrl, videoCaption, body,
+  cover{ src, alt, position, overlayColor, overlayLeft, overlayRight }, heroImage{ src, alt, position, overlayColor, overlayColorTo, overlayStrength, overlayLeft, overlayRight }, order, videoUrl, posterUrl, videoCaption, body,
   shots[]{ src, alt, layout }, gallery[]{ src, alt }, credits[]{ role, name, url, note, noteUrl }
 }`;
 

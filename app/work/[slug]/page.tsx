@@ -33,6 +33,7 @@ function Emphasis({ text }: { text: string }) {
 /** The summary without its *emphasis* markers, for metadata. */
 const plain = (text?: string) => text?.replace(/\*/g, "");
 
+type VideoClipValue = { youtubeId?: string; start?: number; end?: number; title?: string; caption?: string };
 type PullQuoteValue = { text?: string; source?: string; sourceUrl?: string };
 type ImageGroupValue = { images?: { src?: string; alt?: string }[]; caption?: string };
 
@@ -52,6 +53,27 @@ const bodyComponents = (accent: string): PortableTextComponents => ({
   types: {
     // A direct quote pulled out of the story: set large on a solid highlight
     // in the client's color, with its source.
+    // One segment of a YouTube video (privacy-enhanced embed), full story width.
+    videoClip: ({ value }: { value: VideoClipValue }) => {
+      if (!value.youtubeId) return null;
+      const q = new URLSearchParams({ start: String(Math.floor(value.start ?? 0)), rel: "0", modestbranding: "1" });
+      if (value.end) q.set("end", String(Math.ceil(value.end)));
+      return (
+        <figure className="my-10">
+          <div className="aspect-video w-full bg-ink">
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${value.youtubeId}?${q}`}
+              title={value.title ?? "Video"}
+              loading="lazy"
+              allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+              allowFullScreen
+              className="h-full w-full"
+            />
+          </div>
+          {value.caption && <figcaption className="mt-3 text-sm opacity-80">{value.caption}</figcaption>}
+        </figure>
+      );
+    },
     pullQuote: ({ value }: { value: PullQuoteValue }) =>
       value.text ? (
         <figure className="pull-quote my-14" style={{ "--quote": accent, "--quote-ink": inkOn(accent) } as React.CSSProperties}>

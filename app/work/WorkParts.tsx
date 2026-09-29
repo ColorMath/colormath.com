@@ -41,9 +41,20 @@ function hasLogo(slug: string) {
  */
 function Cover({ study }: { study: CaseStudy }) {
   const box = "aspect-[4/3] w-full md:aspect-[21/9]";
-  if (study.cover?.src) {
-    /* eslint-disable-next-line @next/next/no-img-element */
-    return <img src={study.cover.src} alt="" loading="lazy" className={`${box} object-cover`} />;
+  const cover = study.cover;
+  if (cover?.src) {
+    const color = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(cover.overlayColor ?? "") ? cover.overlayColor : undefined;
+    const pct = (n?: number) => Math.min(100, Math.max(0, Math.round(n ?? 0)));
+    const wash = color
+      ? `linear-gradient(to right, color-mix(in srgb, ${color} ${pct(cover.overlayLeft)}%, transparent), color-mix(in srgb, ${color} ${pct(cover.overlayRight ?? cover.overlayLeft)}%, transparent))`
+      : undefined;
+    return (
+      <div className={`${box} relative overflow-hidden`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={cover.src} alt="" loading="lazy" className="h-full w-full object-cover" style={{ objectPosition: cover.position }} />
+        {wash && <div aria-hidden className="absolute inset-0" style={{ backgroundImage: wash }} />}
+      </div>
+    );
   }
   const company = study.companies[0];
   return (
