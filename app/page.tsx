@@ -244,14 +244,6 @@ export default async function Home() {
         className="room relative isolate overflow-hidden bg-violet text-paper"
       >
         <div className="mx-auto w-full max-w-7xl px-6 pt-[calc(32vw+1rem)] pb-20 md:pt-[24vw] lg:pt-[23vw] md:pb-28">
-          {/* Phones: the film's wedge block is cropped out, so the easter-egg
-              link sits under the film as the section's first line. */}
-          <a
-            href="/work/building-blocks/"
-            className="mb-14 inline-block font-display text-sm font-bold text-paper/90 underline decoration-1 underline-offset-4 md:hidden"
-          >
-            * See how we made this →
-          </a>
           <div
             className="@container grid items-start gap-x-10 gap-y-10 md:grid-cols-[1fr_1.15fr_1fr]"
             style={{ "--floor-y": floorLineY(content.founders[0]) } as React.CSSProperties}

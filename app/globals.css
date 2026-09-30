@@ -98,10 +98,17 @@
   animation: logo-scroll 200s linear infinite;
 }
 
-.logo-marquee:hover .logo-track,
 .logo-marquee:focus-within .logo-track,
 .logo-marquee[data-paused] .logo-track {
   animation-play-state: paused;
+}
+
+/* Hover-pause only where hover is real: on touch screens a tap leaves a sticky
+   :hover that would stop the row. */
+@media (hover: hover) {
+  .logo-marquee:hover .logo-track {
+    animation-play-state: paused;
+  }
 }
 
 /* Keyboard users: stop the motion and make the row natively scrollable, so the
@@ -140,6 +147,10 @@
     animation: none;
   }
   .logo-track [aria-hidden="true"] {
+    display: none;
+  }
+  /* Nothing moves, so there's nothing to pause. */
+  .logo-toggle {
     display: none;
   }
 }
