@@ -378,8 +378,8 @@ export default async function Home() {
       {/* Violet field: Studio notes signup (the address form is on /notes/signup) */}
       <NotesSignupBand source="home">
         Interesting things for your inbox (and once a quarter, your mailbox):
-        what we&apos;re building, what&apos;s working, and what we&apos;d do
-        differently.
+        what we&apos;re building, what&apos;s on our minds, and what&apos;s
+        inspiring us.
       </NotesSignupBand>
 
       {/* Yellow field: contact */}

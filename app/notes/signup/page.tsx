@@ -24,9 +24,9 @@ export default function NotesSignupPage() {
           Interesting things for your inbox (and sometimes your mailbox).
         </p>
         <p className="mt-4 max-w-[45ch] text-lg leading-relaxed md:text-xl">
-          <strong>By email:</strong>{" "}what we&apos;re building, what&apos;s
-          working, and what we&apos;d do differently next time. We send it when
-          there&apos;s something to say, not on a schedule.
+          <strong>By email:</strong>{" "}what we&apos;re building,
+          what&apos;s on our minds, and what&apos;s inspiring us. We send it
+          when there&apos;s something to say, not on a schedule.
         </p>
         <p className="mt-4 mb-12 max-w-[45ch] text-lg leading-relaxed md:text-xl">
           <strong>By mail:</strong>{" "}once a quarter, something you can hold
