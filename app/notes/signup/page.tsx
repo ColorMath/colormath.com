@@ -19,6 +19,7 @@ export default function NotesSignupPage() {
         <SiteNav />
       </header>
       <main id="main" tabIndex={-1} className="mx-auto w-full max-w-6xl px-6 pt-14 pb-24 outline-none md:pt-20">
+        <p className="mb-3 inline-block bg-yellow px-2 py-0.5 font-display text-sm font-bold text-ink">Sign up for our mailing list</p>
         <h1 className="max-w-[20ch] font-display text-4xl font-bold md:text-6xl">Studio notes</h1>
         <p className="mt-6 max-w-[45ch] text-lg leading-relaxed md:text-xl">
           Interesting things for your inbox (and sometimes your mailbox).

@@ -28,6 +28,9 @@ export default async function NotesIndex() {
       <main id="main" tabIndex={-1} className="outline-none">
         <section className="on-dark bg-red bg-[url('/img/hero-red.png')] bg-cover bg-center pt-[4.25rem] text-paper">
           <div className="mx-auto w-full max-w-6xl px-6 pt-14 pb-16 md:pt-20">
+            <a href="#signup" className="mb-3 inline-block bg-yellow px-2 py-0.5 font-display text-sm font-bold text-ink transition-colors hover:bg-paper">
+              Sign up for our mailing list
+            </a>
             <h1 className="font-display text-[clamp(2.5rem,5.5vw,4.25rem)] font-bold leading-[1.06]">Studio notes</h1>
             <p className="mt-6 max-w-[38rem] text-lg leading-relaxed md:text-xl">
               What we&apos;re building, what&apos;s on our minds, and what&apos;s inspiring us.
@@ -79,7 +82,7 @@ export default async function NotesIndex() {
           </div>
         </section>
 
-        <NotesSignupBand source="notes" heading={notes.length ? "Get the next one" : "Get the first one"}>
+        <NotesSignupBand source="notes" chip={false} heading={notes.length ? "Get the next one" : "Get the first one"}>
           New notes by email. And once a quarter, something you can hold (yes,
           with a stamp).
         </NotesSignupBand>
