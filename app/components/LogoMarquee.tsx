@@ -8,7 +8,8 @@ export type Company = { name: string; logo: string; url: string };
  * One continuously scrolling row of company logos (the list is rendered twice
  * so the loop is seamless). WCAG 2.2.2: anything that moves for more than 5s
  * needs a way to stop it, so there's a pause/play button; the row also pauses
- * on hover and on keyboard focus, and is static with reduced motion.
+ * on hover and on keyboard focus, and is static (with no button) under reduced
+ * motion.
  */
 export function LogoMarquee({ companies }: { companies: Company[] }) {
   const [paused, setPaused] = useState(false);
@@ -25,7 +26,7 @@ export function LogoMarquee({ companies }: { companies: Company[] }) {
           type="button"
           aria-pressed={paused}
           onClick={() => setPaused((p) => !p)}
-          className="shrink-0 text-sm underline decoration-1 underline-offset-4 opacity-80 hover:decoration-violet hover:opacity-100"
+          className="logo-toggle shrink-0 text-sm underline decoration-1 underline-offset-4 opacity-80 hover:decoration-violet hover:opacity-100"
         >
           {paused ? "Play logos" : "Pause logos"}
         </button>
