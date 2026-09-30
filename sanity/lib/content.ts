@@ -88,7 +88,7 @@ export const fallbackContent: LandingContent = {
         start: 42.04, // loop frame 1260: both feet in
         aspect: "822 / 1468",
       },
-      bio: "Cofounder and former Chief Product Officer of Packback, leading product, design, and engineering teams as the platform scaled to 3M+ students through its 2024 acquisition. Forbes 30 Under 30, and once got Mark Cuban to invest on Shark Tank.",
+      bio: "Designer who builds businesses, from the logo to the P&L: brands and products that look good, do good, and perform. Cofounder and former Chief Product Officer of Packback, which scaled to 3M+ students through its 2024 acquisition. Forbes 30 Under 30, and once got Mark Cuban to invest on Shark Tank.",
       url: "https://jessicatenuta.com",
     },
     {
