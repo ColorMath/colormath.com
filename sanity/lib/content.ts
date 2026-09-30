@@ -104,7 +104,7 @@ export const fallbackContent: LandingContent = {
         start: 0, // 20s loop chosen to start and end settled: to camera, ankles crossed
         aspect: "822 / 1468",
       },
-      bio: "Computational astrophysicist turned CTO, with a record of launching new products, building cloud infrastructure and security programs, and guiding companies from Series A through acquisition. Designer and builder of AI systems used by millions. Happiest with his sleeves rolled up.",
+      bio: "Computational astrophysicist turned CTO, with a record of launching new products, building cloud infrastructure and security programs, and guiding companies from Series A through acquisition. Designer and builder of AI systems used by millions. Happiest with sleeves rolled up.",
       url: "https://craigmbooth.com",
     },
   ],
