@@ -104,7 +104,7 @@ export const fallbackContent: LandingContent = {
         start: 0, // 20s loop chosen to start and end settled: to camera, ankles crossed
         aspect: "822 / 1468",
       },
-      bio: "Works with founders to build products that put people first, with investors to strengthen the technology across portfolios, and with technical leaders as a coach and mentor. Computational astrophysicist turned CTO, with a record of launching new products, building cloud infrastructure and security programs, and guiding companies from Series A through acquisition. Designer and builder of AI systems used by millions.",
+      bio: "Computational astrophysicist turned CTO, with a record of launching new products, building cloud infrastructure and security programs, and guiding companies from Series A through acquisition. Works with founders to build products that put people first, with investors to strengthen the technology across portfolios, and with technical leaders as a coach and mentor. Designer and builder of AI systems used by millions.",
       url: "https://craigmbooth.com",
     },
   ],
