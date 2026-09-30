@@ -295,9 +295,11 @@ export default async function Home() {
           {/*
             relative z-10: the row above is an @container, which makes it a
             stacking context that holds the floor layer; without this, Safari
-            paints that layer over the bios.
+            paints that layer over the bios. max-w-[69rem] is max-w-6xl minus
+            its px-6 gutters, so the bios line up with the sections below
+            while the portraits keep the wider row.
           */}
-          <div className="relative z-10 mt-2 grid gap-x-16 gap-y-14 md:mt-4 md:grid-cols-2">
+          <div className="relative z-10 mx-auto mt-2 grid max-w-[69rem] gap-x-16 gap-y-14 md:mt-4 md:grid-cols-2">
             {content.founders.map((founder: Founder, i: number) => (
               <article key={founder.name} className="[&>*:not(:first-child)]:relative [&>*:not(:first-child)]:z-10">
                 {/* The phone copy carries 120/822 of violet padding above and below
