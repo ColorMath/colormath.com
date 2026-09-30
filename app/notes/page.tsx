@@ -7,7 +7,7 @@ import { NotesSignupBand } from "../components/NotesSignupBand";
 export const metadata: Metadata = {
   title: "Studio notes · Color/Math",
   description:
-    "Notes from the Color/Math studio: what we're building, what's working, and what we'd do differently.",
+    "Notes from the Color/Math studio: what we're building, what's on our minds, and what's inspiring us.",
 };
 
 const dateFormat = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
@@ -30,7 +30,7 @@ export default async function NotesIndex() {
           <div className="mx-auto w-full max-w-6xl px-6 pt-14 pb-16 md:pt-20">
             <h1 className="font-display text-[clamp(2.5rem,5.5vw,4.25rem)] font-bold leading-[1.06]">Studio notes</h1>
             <p className="mt-6 max-w-[38rem] text-lg leading-relaxed md:text-xl">
-              What we&apos;re building, what&apos;s working, and what we&apos;d do differently.
+              What we&apos;re building, what&apos;s on our minds, and what&apos;s inspiring us.
             </p>
           </div>
         </section>
